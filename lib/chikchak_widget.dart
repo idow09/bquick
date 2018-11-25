@@ -31,10 +31,12 @@ class ChikChakGameState extends State<ChikChakGame> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<bool>>(
+    return StreamBuilder<List<ChikChakTile>>(
       stream: bloc.stateStream,
-      initialData: [true, true], // Should be [true x 49]
-      builder: (BuildContext context, AsyncSnapshot<List<bool>> snapshot) {
+      initialData: [ChikChakTile(1, true), ChikChakTile(2, true)],
+      // Should be [true x 49]
+      builder:
+          (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
         final curState = snapshot.data;
 
         // should build a table widget using the state (List<bool>)
