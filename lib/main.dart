@@ -19,7 +19,7 @@ class _ChikChakAppState extends State<ChikChakApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'RxDart Github Search',
+      title: 'RxDart ChikChak',
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.grey,

@@ -11,9 +11,7 @@ class ChikChakGame extends StatefulWidget {
   ChikChakGame({Key key}) : super(key: key);
 
   @override
-  ChikChakGameState createState() {
-    return ChikChakGameState();
-  }
+  ChikChakGameState createState() => ChikChakGameState();
 }
 
 class ChikChakGameState extends State<ChikChakGame> {
@@ -22,7 +20,6 @@ class ChikChakGameState extends State<ChikChakGame> {
   @override
   void initState() {
     super.initState();
-
     bloc = ChikChakBloc();
   }
 
@@ -38,15 +35,22 @@ class ChikChakGameState extends State<ChikChakGame> {
       stream: bloc.state,
       initialData: [true, true], // Should be [true x 49]
       builder: (BuildContext context, AsyncSnapshot<List<bool>> snapshot) {
-        final state = snapshot.data;
+        final curState = snapshot.data;
 
         // should build a table widget using the state (List<bool>)
 
         return Scaffold(
-          body: Text("Hi there from ChikChak"),
-          floatingActionButton: FloatingActionButton(
-              onPressed: () =>
-                  bloc.onPressed.add(7)), // should be the number of this tile
+          appBar: AppBar(
+            title: Text("Let's Play ChikChak!"),
+          ),
+          body: Text(
+            "Hi there from ChikChak",
+            style: TextStyle(color: Colors.white),
+          ),
+          floatingActionButton: FloatingActionButton(onPressed: () {
+            print('BUTTON PRESSED');
+            bloc.onPressed.add(7);
+          }), // should be the number of this tile
         );
       },
     );
