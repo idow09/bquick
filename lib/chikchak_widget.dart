@@ -37,7 +37,7 @@ class ChikChakGameState extends State<ChikChakGame> {
       // Should be [true x 49]
       builder:
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
-        final curState = snapshot.data;
+        final _curState = snapshot.data;
 
         // should build a table widget using the state (List<bool>)
 
@@ -46,7 +46,7 @@ class ChikChakGameState extends State<ChikChakGame> {
             title: Text("Let's Play ChikChak!"),
           ),
           body: Text(
-            "Hi there from ChikChak\nThe state is $curState",
+            "Hi there from ChikChak\nThe state is $_curState",
             style: TextStyle(color: Colors.white),
           ),
           floatingActionButton: FloatingActionButton(

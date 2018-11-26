@@ -28,13 +28,15 @@ class ChikChakBloc {
   }
 
   void updateState(int index) {
+    _curState[index].visible = false;
     print('updating state after $index has been pressed');
   }
 }
 
 class ChikChakTile {
+  // final int index; ???
   final int num;
-  final bool visible;
+  var visible;
 
   @override
   String toString() {
