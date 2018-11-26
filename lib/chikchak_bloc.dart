@@ -1,32 +1,34 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
-  final Sink<int> onPressed;
-  final Stream<List<ChikChakTile>> stateStream;
+  final _gameStateSubject = BehaviorSubject<
+      UnmodifiableListView<ChikChakTile>>(); // add seedValue: initialGameState
+  final _clicksController = StreamController<int>();
 
-  final List<ChikChakTile> state = [
-    ChikChakTile(1, true),
-    ChikChakTile(2, true)
-  ];
+  final List<ChikChakTile> _curState =
+      List.generate(25, (i) => ChikChakTile(i, true));
 
-  factory ChikChakBloc() {
-    final onPressed = PublishSubject<int>();
-
-    final state = onPressed
-        // explanation
-        .map((i) => [ChikChakTile(1, false), ChikChakTile(2, true)])
-        // explanation
-        .startWith([ChikChakTile(1, true), ChikChakTile(2, true)]);
-
-    return ChikChakBloc._(onPressed, state);
+  ChikChakBloc() {
+    _clicksController.stream.listen((numClicked) async {
+      updateState(numClicked);
+      _gameStateSubject.add(UnmodifiableListView(_curState));
+    });
   }
 
-  ChikChakBloc._(this.onPressed, this.stateStream);
+  Sink<int> get clicks => _clicksController.sink;
+
+  Stream<List<ChikChakTile>> get gameState => _gameStateSubject.stream;
 
   void dispose() {
-    onPressed.close();
+    _clicksController.close();
+    _gameStateSubject.close();
+  }
+
+  void updateState(int index) {
+    print('updating state after $index has been pressed');
   }
 }
 

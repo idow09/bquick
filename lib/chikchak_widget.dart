@@ -32,7 +32,7 @@ class ChikChakGameState extends State<ChikChakGame> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ChikChakTile>>(
-      stream: bloc.stateStream,
+      stream: bloc.gameState,
       initialData: [ChikChakTile(1, true), ChikChakTile(2, true)],
       // Should be [true x 49]
       builder:
@@ -49,10 +49,9 @@ class ChikChakGameState extends State<ChikChakGame> {
             "Hi there from ChikChak\nThe state is $curState",
             style: TextStyle(color: Colors.white),
           ),
-          floatingActionButton: FloatingActionButton(onPressed: () {
-            print('BUTTON PRESSED');
-            bloc.onPressed.add(7);
-          }), // should be the number of this tile
+          floatingActionButton: FloatingActionButton(
+              onPressed: () =>
+                  bloc.clicks.add(7)), // should be the number of this tile
         );
       },
     );
