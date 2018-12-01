@@ -1,12 +1,6 @@
 import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:flutter/material.dart';
 
-// The View in a Stream-based architecture takes two arguments: The State Stream
-// and the onTextChanged callback. In our case, the onTextChanged callback will
-// emit the latest String to a Stream<String> whenever it is called.
-//
-// The State will use the Stream<String> to send new search requests to the
-// GithubApi.
 class ChikChakGame extends StatefulWidget {
   ChikChakGame({Key key}) : super(key: key);
 

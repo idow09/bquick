@@ -1,9 +1,6 @@
 import 'package:chik_chak/chikchak_widget.dart';
 import 'package:flutter/material.dart';
 
-//import 'package:github_search/github_api.dart';
-//import 'package:github_search/search_widget.dart';
-
 void main() {
   runApp(ChikChakApp());
 }
