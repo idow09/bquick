@@ -9,7 +9,7 @@ class ChikChakBloc {
   final _clicksController = StreamController<int>();
 
   final List<ChikChakTile> _curState =
-      List.generate(25, (i) => ChikChakTile(i, true));
+      List.generate(9, (i) => ChikChakTile(i, true));
 
   ChikChakBloc() {
     _clicksController.stream.listen((numClicked) async {
