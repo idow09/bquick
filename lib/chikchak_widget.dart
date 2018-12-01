@@ -35,7 +35,7 @@ class ChikChakGameState extends State<ChikChakGame> {
             if (tile.visible) {
               return GestureDetector(
                 onTap: () {
-                  bloc.clicks.add(tile.index);
+                  bloc.clicks.add(tile.num);
                 },
                 child: Card(
                   child: FittedBox(

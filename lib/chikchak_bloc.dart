@@ -1,20 +1,27 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
-  static final UnmodifiableListView<ChikChakTile> _initUnmodifiableState =
-      UnmodifiableListView(List.generate(9, (i) => ChikChakTile(i, i, true)));
+  static final List<ChikChakTile> _initUnmodifiableState =
+  shuffle(List.generate(9, (i) => ChikChakTile(i + 1, true)));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
-      seedValue: _initUnmodifiableState);
+      seedValue: UnmodifiableListView(_initUnmodifiableState));
 
   final _clicksController = StreamController<int>();
 
   final List<ChikChakTile> _curState = _initUnmodifiableState;
 
+  final Map<int, int> _num2index = Map();
+
   ChikChakBloc() {
+    _curState.asMap().forEach((i, t) {
+      _num2index[t.num] = i;
+    });
+
     _clicksController.stream.listen((numClicked) async {
       updateState(numClicked);
     });
@@ -23,7 +30,7 @@ class ChikChakBloc {
   Sink<int> get clicks => _clicksController.sink;
 
   UnmodifiableListView<ChikChakTile> get gameInitialState =>
-      _initUnmodifiableState;
+      UnmodifiableListView(_initUnmodifiableState);
 
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
       _gameStateSubject.stream;
@@ -34,14 +41,27 @@ class ChikChakBloc {
   }
 
   void updateState(int numClicked) {
-    _curState[numClicked].visible = false;
+    _curState[_num2index[numClicked]].visible = false;
     print('Updating state after $numClicked has been pressed');
     _gameStateSubject.add(UnmodifiableListView(_curState));
+  }
+
+  static shuffle(List<ChikChakTile> items) {
+    var random = new Random();
+
+    for (var i = items.length - 1; i > 0; i--) {
+      var n = random.nextInt(i + 1);
+
+      var temp = items[i];
+      items[i] = items[n];
+      items[n] = temp;
+    }
+
+    return items;
   }
 }
 
 class ChikChakTile {
-  final int index;
   final int num;
   var visible;
 
@@ -54,5 +74,5 @@ class ChikChakTile {
     }
   }
 
-  ChikChakTile(this.index, this.num, this.visible);
+  ChikChakTile(this.num, this.visible);
 }
