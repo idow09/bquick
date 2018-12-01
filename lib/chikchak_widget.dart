@@ -38,29 +38,24 @@ class ChikChakGameState extends State<ChikChakGame> {
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
         if (snapshot.hasData) {
           final _curState = snapshot.data;
-          return Scaffold(
-            appBar: AppBar(
-              title: Text("Let's Play ChikChak!"),
-            ),
-            body: GridView.count(
-              // Create a grid with 2 columns. If you change the scrollDirection to
-              // horizontal, this would produce 2 rows.
-              crossAxisCount: 3,
-              // Generate 100 Widgets that display their index in the List
-              children: List.generate(9, (index) {
-                return GestureDetector(
-                  child: Center(
-                    child: Text(
-                      '${_curState[index]}',
-                      style: Theme.of(context).textTheme.headline,
-                    ),
+          return GridView.count(
+            // Create a grid with 2 columns. If you change the scrollDirection to
+            // horizontal, this would produce 2 rows.
+            crossAxisCount: 3,
+            // Generate 100 Widgets that display their index in the List
+            children: List.generate(9, (index) {
+              return GestureDetector(
+                child: Center(
+                  child: Text(
+                    '${_curState[index]}',
+                    style: Theme.of(context).textTheme.headline,
                   ),
-                  onTap: () {
-                    bloc.clicks.add(index);
-                  },
-                );
-              }),
-            ),
+                ),
+                onTap: () {
+                  bloc.clicks.add(index);
+                },
+              );
+            }),
           );
         }
       },

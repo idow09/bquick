@@ -29,7 +29,7 @@ class ChikChakBloc {
 
   void updateState(int index) {
     _curState[index].visible = false;
-    print('updating state after $index has been pressed');
+    print('Updating state after $index has been pressed');
   }
 }
 

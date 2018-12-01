@@ -24,7 +24,12 @@ class _ChikChakAppState extends State<ChikChakApp> {
         brightness: Brightness.dark,
         primarySwatch: Colors.grey,
       ),
-      home: ChikChakGame(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Let's Play ChikChak!"),
+        ),
+        body: ChikChakGame(),
+      ),
     );
   }
 }
