@@ -17,6 +17,8 @@ class ChikChakBloc {
 
   final Map<int, int> _num2index = Map();
 
+  var _curNum = 1;
+
   ChikChakBloc() {
     _curState.asMap().forEach((i, t) {
       _num2index[t.num] = i;
@@ -41,9 +43,12 @@ class ChikChakBloc {
   }
 
   void updateState(int numClicked) {
-    _curState[_num2index[numClicked]].visible = false;
-    print('Updating state after $numClicked has been pressed');
-    _gameStateSubject.add(UnmodifiableListView(_curState));
+    if (numClicked == _curNum) {
+      _curState[_num2index[numClicked]].visible = false;
+      print('Updating state after $numClicked has been pressed');
+      _gameStateSubject.add(UnmodifiableListView(_curState));
+      _curNum++;
+    }
   }
 
   static shuffle(List<ChikChakTile> items) {
