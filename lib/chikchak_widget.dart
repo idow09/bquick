@@ -37,27 +37,23 @@ class ChikChakGameState extends State<ChikChakGame> {
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
         return GridView.count(
           crossAxisCount: 3,
-          children: List.generate(9, (index) {
+          children: snapshot.data.map((tile) {
             return FittedBox(
               fit: BoxFit.fill,
               child: GestureDetector(
                 child: Center(
                   child: Card(
                     child: Text(
-                      '${snapshot.data[index]}',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline,
+                      '$tile',
                     ),
                   ),
                 ),
                 onTap: () {
-                  bloc.clicks.add(index);
+                  bloc.clicks.add(tile.num);
                 },
               ),
             );
-          }),
+          }).toList(),
         );
       },
     );
