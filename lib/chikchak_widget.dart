@@ -35,20 +35,27 @@ class ChikChakGameState extends State<ChikChakGame> {
       stream: bloc.gameState,
       builder:
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
-        final _curState = snapshot.data;
         return GridView.count(
           crossAxisCount: 3,
           children: List.generate(9, (index) {
-            return GestureDetector(
-              child: Center(
-                child: Text(
-                  '${_curState[index]}',
-                  style: Theme.of(context).textTheme.headline,
+            return FittedBox(
+              fit: BoxFit.fill,
+              child: GestureDetector(
+                child: Center(
+                  child: Card(
+                    child: Text(
+                      '${snapshot.data[index]}',
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline,
+                    ),
+                  ),
                 ),
+                onTap: () {
+                  bloc.clicks.add(index);
+                },
               ),
-              onTap: () {
-                bloc.clicks.add(index);
-              },
             );
           }),
         );
