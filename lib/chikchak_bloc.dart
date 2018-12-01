@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
   static final UnmodifiableListView<ChikChakTile> _initUnmodifiableState =
-      UnmodifiableListView(List.generate(9, (i) => ChikChakTile(i, true)));
+      UnmodifiableListView(List.generate(9, (i) => ChikChakTile(i, i, true)));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
       seedValue: _initUnmodifiableState);
@@ -41,7 +41,7 @@ class ChikChakBloc {
 }
 
 class ChikChakTile {
-  // final int index; ???
+  final int index;
   final int num;
   var visible;
 
@@ -54,5 +54,5 @@ class ChikChakTile {
     }
   }
 
-  ChikChakTile(this.num, this.visible);
+  ChikChakTile(this.index, this.num, this.visible);
 }

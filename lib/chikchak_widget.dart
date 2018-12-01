@@ -49,7 +49,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                   ),
                 ),
                 onTap: () {
-                  bloc.clicks.add(tile.num);
+                  bloc.clicks.add(tile.index);
                 },
               ),
             );
