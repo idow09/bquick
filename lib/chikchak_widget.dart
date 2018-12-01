@@ -38,21 +38,26 @@ class ChikChakGameState extends State<ChikChakGame> {
         return GridView.count(
           crossAxisCount: 3,
           children: snapshot.data.map((tile) {
-            return FittedBox(
-              fit: BoxFit.fill,
-              child: GestureDetector(
-                child: Center(
-                  child: Card(
-                    child: Text(
-                      '$tile',
-                    ),
-                  ),
-                ),
+            if (tile.visible) {
+              return GestureDetector(
                 onTap: () {
                   bloc.clicks.add(tile.index);
                 },
-              ),
-            );
+                child: Card(
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${tile.num}',
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
           }).toList(),
         );
       },
