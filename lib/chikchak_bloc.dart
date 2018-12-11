@@ -5,15 +5,15 @@ import 'dart:math';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
-  static final List<ChikChakTile> _initUnmodifiableState =
+  static final List<ChikChakTile> _initState =
   shuffle(List.generate(9, (i) => ChikChakTile(i + 1, true)));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
-      seedValue: UnmodifiableListView(_initUnmodifiableState));
+      seedValue: UnmodifiableListView(_initState));
 
   final _clicksController = StreamController<int>();
 
-  final List<ChikChakTile> _curState = _initUnmodifiableState;
+  final List<ChikChakTile> _curState = _initState;
 
   final Map<int, int> _num2index = Map();
 
@@ -31,9 +31,6 @@ class ChikChakBloc {
 
   Sink<int> get clicks => _clicksController.sink;
 
-  UnmodifiableListView<ChikChakTile> get gameInitialState =>
-      UnmodifiableListView(_initUnmodifiableState);
-
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
       _gameStateSubject.stream;
 
@@ -44,10 +41,10 @@ class ChikChakBloc {
 
   void updateState(int numClicked) {
     if (numClicked == _curNum) {
+      print('User clicked on $numClicked.');
       _curState[_num2index[numClicked]].visible = false;
-      print('Updating state after $numClicked has been pressed');
-      _gameStateSubject.add(UnmodifiableListView(_curState));
       _curNum++;
+      _gameStateSubject.add(UnmodifiableListView(_curState));
     }
   }
 
