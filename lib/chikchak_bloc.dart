@@ -25,7 +25,7 @@ class ChikChakBloc {
     });
 
     _clicksController.stream.listen((numClicked) async {
-      updateState(numClicked);
+      handleClickEvent(numClicked);
     });
   }
 
@@ -39,13 +39,21 @@ class ChikChakBloc {
     _gameStateSubject.close();
   }
 
-  void updateState(int numClicked) {
+  void handleClickEvent(int numClicked) {
     if (numClicked == _curNum) {
       print('User clicked on $numClicked.');
-      _curState[_num2index[numClicked]].visible = false;
-      _curNum++;
-      _gameStateSubject.add(UnmodifiableListView(_curState));
+      updateState(numClicked);
+      publishNewState();
     }
+  }
+
+  void publishNewState() {
+    _gameStateSubject.add(UnmodifiableListView(_curState));
+  }
+
+  void updateState(int numClicked) {
+    _curState[_num2index[numClicked]].visible = false;
+    _curNum++;
   }
 
   static shuffle(List<ChikChakTile> tiles) {
