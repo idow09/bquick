@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
   static final List<ChikChakTile> _initState =
-  shuffle(List.generate(9, (i) => ChikChakTile(i + 1, true)));
+      shuffle(List.generate(9, (i) => ChikChakTile(i + 1, true)));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
       seedValue: UnmodifiableListView(_initState));
@@ -66,15 +66,6 @@ class ChikChakBloc {
 class ChikChakTile {
   final int num;
   var visible;
-
-  @override
-  String toString() {
-    if (visible) {
-      return "[ $num ]";
-    } else {
-      return "[($num)]";
-    }
-  }
 
   ChikChakTile(this.num, this.visible);
 }
