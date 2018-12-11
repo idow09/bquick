@@ -48,18 +48,18 @@ class ChikChakBloc {
     }
   }
 
-  static shuffle(List<ChikChakTile> items) {
+  static shuffle(List<ChikChakTile> tiles) {
     var random = new Random();
 
-    for (var i = items.length - 1; i > 0; i--) {
+    for (var i = tiles.length - 1; i > 0; i--) {
       var n = random.nextInt(i + 1);
 
-      var temp = items[i];
-      items[i] = items[n];
-      items[n] = temp;
+      var temp = tiles[i];
+      tiles[i] = tiles[n];
+      tiles[n] = temp;
     }
 
-    return items;
+    return tiles;
   }
 }
 
