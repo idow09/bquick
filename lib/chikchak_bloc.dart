@@ -20,8 +20,8 @@ class ChikChakBloc {
   var _curNum = 1;
 
   ChikChakBloc() {
-    _curState.asMap().forEach((i, t) {
-      _num2index[t.num] = i;
+    _curState.asMap().forEach((i, tile) {
+      _num2index[tile.num] = i;
     });
 
     _clicksController.stream.listen((numClicked) async {
