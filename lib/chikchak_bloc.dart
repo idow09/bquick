@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
   static final List<ChikChakTile> _initState =
-      shuffle(List.generate(9, (i) => ChikChakTile(i + 1, true)));
+  shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
       seedValue: UnmodifiableListView(_initState));

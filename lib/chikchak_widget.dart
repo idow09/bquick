@@ -30,7 +30,7 @@ class ChikChakGameState extends State<ChikChakGame> {
       builder:
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
         return GridView.count(
-          crossAxisCount: 3,
+          crossAxisCount: 5,
           children: snapshot.data.map((tile) {
             if (tile.visible) {
               return GestureDetector(
