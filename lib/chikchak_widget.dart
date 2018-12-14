@@ -44,6 +44,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                             ),
                           ),
                         ),
+                        elevation: 8,
                         shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
@@ -58,11 +59,21 @@ class ChikChakGameState extends State<ChikChakGame> {
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    "Current number: 7",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 25),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 8,
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Current number: 7",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
