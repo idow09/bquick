@@ -5,24 +5,26 @@ import 'dart:math';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
-  static final List<ChikChakTile> _initState =
-  List.generate(25, (i) => ChikChakTile(i + 1, true));
+  List<ChikChakTile> _curState;
 
-  final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
-      seedValue: UnmodifiableListView(_initState));
-
-  final _clicksController = StreamController<int>();
-
-  final List<ChikChakTile> _curState = shuffle(_initState);
+  int _curNum;
 
   final Map<int, int> _num2index = Map();
 
-  var _curNum = 1;
+  BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
+
+  final StreamController<int> _clicksController = StreamController<int>();
 
   ChikChakBloc() {
+    _curState = shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
+    _curNum = 1;
+
     _curState.asMap().forEach((i, tile) {
       _num2index[tile.num] = i;
     });
+
+    _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
+        seedValue: UnmodifiableListView(_curState));
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -40,8 +42,8 @@ class ChikChakBloc {
   }
 
   void handleClickEvent(int numClicked) {
+    print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
-      print('User clicked on $numClicked.');
       updateState(numClicked);
       publishNewState();
     }
