@@ -24,14 +24,8 @@ class ChikChakGameState extends State<ChikChakGame> {
         return Column(
           children: <Widget>[
             Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width,
               child: GridView.count(
                 crossAxisCount: 5,
                 children: snapshot.data.map((tile) {
@@ -52,7 +46,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                         ),
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(20))),
+                                BorderRadius.all(Radius.circular(20))),
                       ),
                     );
                   } else {
