@@ -29,32 +29,47 @@ class ChikChakGameState extends State<ChikChakGame> {
       stream: _bloc.gameState,
       builder:
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
-        return GridView.count(
-          crossAxisCount: 5,
-          children: snapshot.data.map((tile) {
-            if (tile.visible) {
-              return GestureDetector(
-                onTap: () {
-                  _bloc.clicks.add(tile.num);
-                },
-                child: Card(
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '${tile.num}',
+        return Column(
+          children: <Widget>[
+            Container(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .width,
+              child: GridView.count(
+                crossAxisCount: 5,
+                children: snapshot.data.map((tile) {
+                  if (tile.visible) {
+                    return GestureDetector(
+                      onTap: () {
+                        _bloc.clicks.add(tile.num);
+                      },
+                      child: Card(
+                        child: FittedBox(
+                          fit: BoxFit.fill,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${tile.num}',
+                            ),
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20))),
                       ),
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                ),
-              );
-            } else {
-              return Container();
-            }
-          }).toList(),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }).toList(),
+              ),
+            ),
+          ],
         );
       },
     );
