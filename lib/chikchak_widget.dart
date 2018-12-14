@@ -69,6 +69,18 @@ class ChikChakGameState extends State<ChikChakGame> {
                 }).toList(),
               ),
             ),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    "Current number: 7",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ),
+              ],
+            )
           ],
         );
       },
