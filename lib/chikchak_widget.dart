@@ -47,6 +47,8 @@ class ChikChakGameState extends State<ChikChakGame> {
                       ),
                     ),
                   ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
                 ),
               );
             } else {
