@@ -56,22 +56,41 @@ class ChikChakGameState extends State<ChikChakGame> {
                 }).toList(),
               ),
             ),
+            Spacer(),
             Row(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Card(
                     elevation: 8,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: Column(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Current number: 7",
+                            "Current: 7",
                             textAlign: TextAlign.start,
                             style: TextStyle(fontSize: 25),
                           ),
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Last Score: 1000",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "High Score: 100000",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        )
                       ],
                     ),
                   ),
