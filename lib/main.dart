@@ -1,3 +1,4 @@
+import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:chik_chak/chikchak_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,20 @@ class ChikChakApp extends StatefulWidget {
 }
 
 class _ChikChakAppState extends State<ChikChakApp> {
+  ChikChakBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = ChikChakBloc();
+  }
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,17 +40,17 @@ class _ChikChakAppState extends State<ChikChakApp> {
         appBar: AppBar(
           title: Text("Let's Play ChikChak!"),
         ),
-        body: ChikChakGame(),
+        body: ChikChakGame(_bloc),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("Restarting game!"),
-                    duration: Duration(seconds: 1),
-                  ));
-                },
-                child: Icon(Icons.refresh),
-              ),
+            onPressed: () {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text("Restarting game!"),
+                duration: Duration(seconds: 1),
+              ));
+            },
+            child: Icon(Icons.refresh),
+          ),
         ),
       ),
     );
