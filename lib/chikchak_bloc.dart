@@ -15,6 +15,9 @@ class ChikChakBloc {
 
   final StreamController<int> _clicksController = StreamController<int>();
 
+  final StreamController<bool> _restartClicksController =
+  StreamController<bool>();
+
   ChikChakBloc() {
     _curState = shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
     _curNum = 1;
@@ -29,15 +32,22 @@ class ChikChakBloc {
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
     });
+
+    _restartClicksController.stream.listen((click) async {
+      restartGame();
+    });
   }
 
   Sink<int> get clicks => _clicksController.sink;
+
+  Sink<bool> get restartClicks => _restartClicksController.sink;
 
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
       _gameStateSubject.stream;
 
   void dispose() {
     _clicksController.close();
+    _restartClicksController.close();
     _gameStateSubject.close();
   }
 
@@ -70,6 +80,10 @@ class ChikChakBloc {
     }
 
     return tiles;
+  }
+
+  void restartGame() {
+    print("Restarting game.");
   }
 }
 
