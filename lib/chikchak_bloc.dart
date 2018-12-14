@@ -18,12 +18,7 @@ class ChikChakBloc {
   final StreamController<bool> _restartsController = StreamController<bool>();
 
   ChikChakBloc() {
-    _curState = shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
-    _curNum = 1;
-
-    _curState.asMap().forEach((i, tile) {
-      _num2index[tile.num] = i;
-    });
+    resetState();
 
     _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
         seedValue: UnmodifiableListView(_curState));
@@ -34,6 +29,15 @@ class ChikChakBloc {
 
     _restartsController.stream.listen((restartEvent) async {
       restartGame();
+    });
+  }
+
+  void resetState() {
+    _curState = shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
+    _curNum = 1;
+
+    _curState.asMap().forEach((i, tile) {
+      _num2index[tile.num] = i;
     });
   }
 
@@ -54,17 +58,23 @@ class ChikChakBloc {
     print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
       updateState(numClicked);
-      publishNewState();
+      publishState();
     }
-  }
-
-  void publishNewState() {
-    _gameStateSubject.add(UnmodifiableListView(_curState));
   }
 
   void updateState(int numClicked) {
     _curState[_num2index[numClicked]].visible = false;
     _curNum++;
+  }
+
+  void publishState() {
+    _gameStateSubject.add(UnmodifiableListView(_curState));
+  }
+
+  void restartGame() {
+    print("Restarting game.");
+    resetState();
+    publishState();
   }
 
   static shuffle(List<ChikChakTile> tiles) {
@@ -79,10 +89,6 @@ class ChikChakBloc {
     }
 
     return tiles;
-  }
-
-  void restartGame() {
-    print("Restarting game.");
   }
 }
 
