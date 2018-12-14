@@ -6,14 +6,14 @@ import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
   static final List<ChikChakTile> _initState =
-  shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
+  List.generate(25, (i) => ChikChakTile(i + 1, true));
 
   final _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
       seedValue: UnmodifiableListView(_initState));
 
   final _clicksController = StreamController<int>();
 
-  final List<ChikChakTile> _curState = _initState;
+  final List<ChikChakTile> _curState = shuffle(_initState);
 
   final Map<int, int> _num2index = Map();
 
