@@ -9,24 +9,24 @@ class ChikChakGame extends StatefulWidget {
 }
 
 class ChikChakGameState extends State<ChikChakGame> {
-  ChikChakBloc bloc;
+  ChikChakBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = ChikChakBloc();
+    _bloc = ChikChakBloc();
   }
 
   @override
   void dispose() {
-    bloc.dispose();
+    _bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ChikChakTile>>(
-      stream: bloc.gameState,
+      stream: _bloc.gameState,
       builder:
           (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
         return GridView.count(
@@ -35,7 +35,7 @@ class ChikChakGameState extends State<ChikChakGame> {
             if (tile.visible) {
               return GestureDetector(
                 onTap: () {
-                  bloc.clicks.add(tile.num);
+                  _bloc.clicks.add(tile.num);
                 },
                 child: Card(
                   child: FittedBox(
