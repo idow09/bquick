@@ -32,10 +32,6 @@ class _ChikChakAppState extends State<ChikChakApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'RxDart ChikChak',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.grey,
-      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text("Let's Play ChikChak!"),
