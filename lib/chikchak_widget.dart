@@ -36,7 +36,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                       },
                       child: Card(
                         child: FittedBox(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
