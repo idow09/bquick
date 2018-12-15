@@ -69,10 +69,15 @@ class ChikChakGameState extends State<ChikChakGame> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Current: 7",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 25),
+                          child: StreamBuilder(
+                            stream: _bloc.curNum,
+                            builder: (BuildContext context,
+                                    AsyncSnapshot<int> snapshot) =>
+                                Text(
+                                  "Current: ${snapshot.data}",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(fontSize: 25),
+                                ),
                           ),
                         ),
                         Padding(

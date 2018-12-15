@@ -48,7 +48,7 @@ class _ChikChakAppState extends State<ChikChakApp> {
                     content: Text("Restarting game!"),
                     duration: Duration(seconds: 1),
                   ));
-                  _bloc.restarts.add(true);
+                  _bloc.restarts.add(null);
                 },
                 child: Icon(Icons.refresh),
               ),

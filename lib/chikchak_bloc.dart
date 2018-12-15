@@ -13,9 +13,11 @@ class ChikChakBloc {
 
   BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
 
+  BehaviorSubject<int> _curNumSubject;
+
   final StreamController<int> _clicksController = StreamController<int>();
 
-  final StreamController<bool> _restartsController = StreamController<bool>();
+  final StreamController<void> _restartsController = StreamController<void>();
 
   ChikChakBloc() {
     resetState();
@@ -23,11 +25,13 @@ class ChikChakBloc {
     _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
         seedValue: UnmodifiableListView(_curState));
 
+    _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
+
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
     });
 
-    _restartsController.stream.listen((restartEvent) async {
+    _restartsController.stream.listen((_) async {
       restartGame();
     });
   }
@@ -43,15 +47,18 @@ class ChikChakBloc {
 
   Sink<int> get clicks => _clicksController.sink;
 
-  Sink<bool> get restarts => _restartsController.sink;
+  Sink<void> get restarts => _restartsController.sink;
 
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
       _gameStateSubject.stream;
+
+  Stream<int> get curNum => _curNumSubject.stream;
 
   void dispose() {
     _clicksController.close();
     _restartsController.close();
     _gameStateSubject.close();
+    _curNumSubject.close();
   }
 
   void handleClickEvent(int numClicked) {
@@ -69,6 +76,7 @@ class ChikChakBloc {
 
   void publishState() {
     _gameStateSubject.add(UnmodifiableListView(_curState));
+    _curNumSubject.add(_curNum);
   }
 
   void restartGame() {
