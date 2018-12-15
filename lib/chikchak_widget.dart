@@ -47,7 +47,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                         elevation: 8,
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                                BorderRadius.all(Radius.circular(10))),
                       ),
                     );
                   } else {
@@ -64,7 +64,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                   child: Card(
                     elevation: 8,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Column(
                       children: <Widget>[
                         Padding(
