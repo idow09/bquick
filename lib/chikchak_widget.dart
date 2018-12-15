@@ -27,6 +27,7 @@ class ChikChakGameState extends State<ChikChakGame> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
               child: GridView.count(
+                physics: NeverScrollableScrollPhysics(),
                 crossAxisCount: 5,
                 children: snapshot.data.map((tile) {
                   if (tile.visible) {
@@ -47,7 +48,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                         elevation: 8,
                         shape: RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                            BorderRadius.all(Radius.circular(10))),
                       ),
                     );
                   } else {
