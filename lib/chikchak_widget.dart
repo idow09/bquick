@@ -35,21 +35,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                       onTap: () {
                         _bloc.clicks.add(tile.num);
                       },
-                      child: Card(
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '${tile.num}',
-                            ),
-                          ),
-                        ),
-                        elevation: 8,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(10))),
-                      ),
+                      child: Tile(tile.num),
                     );
                   } else {
                     return Container();
@@ -98,6 +84,30 @@ class ChikChakGameState extends State<ChikChakGame> {
           ],
         );
       },
+    );
+  }
+}
+
+class Tile extends StatelessWidget {
+  final int value;
+
+  const Tile(this.value, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: FittedBox(
+        fit: BoxFit.fitHeight,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            '$value',
+          ),
+        ),
+      ),
+      elevation: 8,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
     );
   }
 }
