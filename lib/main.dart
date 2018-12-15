@@ -43,13 +43,7 @@ class _ChikChakAppState extends State<ChikChakApp> {
         body: ChikChakGame(_bloc),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text("Restarting game!"),
-                    duration: Duration(seconds: 1),
-                  ));
-                  _bloc.restarts.add(null);
-                },
+                onPressed: () => _bloc.restarts.add(null),
                 child: Icon(Icons.refresh),
               ),
         ),
