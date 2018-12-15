@@ -83,14 +83,6 @@ class ChikChakGameState extends State<ChikChakGame> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Last Score: 1000",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
                             "High Score: 100000",
                             textAlign: TextAlign.start,
                             style: TextStyle(fontSize: 25),
