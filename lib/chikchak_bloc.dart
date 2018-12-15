@@ -5,6 +5,8 @@ import 'dart:math';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
+  final random = Random();
+
   List<ChikChakTile> _curState;
 
   int _curNum;
@@ -37,7 +39,8 @@ class ChikChakBloc {
   }
 
   void resetState() {
-    _curState = shuffle(List.generate(25, (i) => ChikChakTile(i + 1, true)));
+    _curState = List.generate(25, (i) => ChikChakTile(i + 1, true));
+    _curState.shuffle(random);
     _curNum = 1;
 
     _curState.asMap().forEach((i, tile) {
@@ -83,20 +86,6 @@ class ChikChakBloc {
     print("Restarting game.");
     resetState();
     publishState();
-  }
-
-  static shuffle(List<ChikChakTile> tiles) {
-    var random = new Random();
-
-    for (var i = tiles.length - 1; i > 0; i--) {
-      var n = random.nextInt(i + 1);
-
-      var temp = tiles[i];
-      tiles[i] = tiles[n];
-      tiles[n] = temp;
-    }
-
-    return tiles;
   }
 }
 
