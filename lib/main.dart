@@ -41,6 +41,7 @@ class _ChikChakAppState extends State<ChikChakApp> {
           builder: (context) => FloatingActionButton(
                 onPressed: () => _bloc.restarts.add(null),
                 child: Icon(Icons.refresh),
+            tooltip: "Restart",
               ),
         ),
       ),
