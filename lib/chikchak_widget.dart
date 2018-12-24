@@ -53,19 +53,24 @@ class ChikChakGameState extends State<ChikChakGame> {
                       stream: _bloc.curNum,
                       builder:
                           (BuildContext context, AsyncSnapshot<int> snapshot) =>
-                          Text(
-                            "Current: ${snapshot.data}",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 25),
-                          ),
+                              Text(
+                                "Current: ${snapshot.data}",
+                                textAlign: TextAlign.start,
+                                style: TextStyle(fontSize: 25),
+                              ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "High Score: 100000",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(fontSize: 25),
+                    child: StreamBuilder(
+                      stream: _bloc.curStopwatch,
+                      builder: (BuildContext context,
+                              AsyncSnapshot<Duration> snapshot) =>
+                          Text(
+                            "Time: ${snapshot.data}",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(fontSize: 25),
+                          ),
                     ),
                   )
                 ],
