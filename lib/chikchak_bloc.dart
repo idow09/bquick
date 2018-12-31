@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
@@ -11,6 +12,8 @@ class ChikChakBloc {
 
   final Map<int, int> _num2index = Map();
 
+  final DateFormat _dateFormatter = new DateFormat('mm:ss.SSS');
+
   List<ChikChakTile> _curState;
 
   int _curNum;
@@ -19,7 +22,7 @@ class ChikChakBloc {
 
   BehaviorSubject<int> _curNumSubject;
 
-  BehaviorSubject<Duration> _curStopwatchSubject;
+  BehaviorSubject<String> _curStopwatchSubject;
 
   final StreamController<int> _clicksController = StreamController<int>();
 
@@ -33,8 +36,8 @@ class ChikChakBloc {
 
     _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
 
-    _curStopwatchSubject =
-        BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
+    _curStopwatchSubject = BehaviorSubject<String>(
+        seedValue: formatStopwatch(Duration(seconds: 0)));
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -67,7 +70,7 @@ class ChikChakBloc {
 
   Stream<int> get curNum => _curNumSubject.stream;
 
-  Stream<Duration> get curStopwatch => _curStopwatchSubject.stream;
+  Stream<String> get curStopwatch => _curStopwatchSubject.stream;
 
   void dispose() {
     _clicksController.close();
@@ -104,8 +107,13 @@ class ChikChakBloc {
   void startStopwatchStream() async {
     _stopwatch.start();
     Timer.periodic(Duration(milliseconds: 30), (_) async {
-      _curStopwatchSubject.add(_stopwatch.elapsed);
+      _curStopwatchSubject.add(formatStopwatch(_stopwatch.elapsed));
     });
+  }
+
+  String formatStopwatch(Duration elapsed) {
+    var time = DateTime.fromMillisecondsSinceEpoch(elapsed.inMilliseconds);
+    return _dateFormatter.format(time);
   }
 }
 

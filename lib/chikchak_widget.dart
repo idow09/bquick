@@ -65,7 +65,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                     child: StreamBuilder(
                       stream: _bloc.curStopwatch,
                       builder: (BuildContext context,
-                              AsyncSnapshot<Duration> snapshot) =>
+                              AsyncSnapshot<String> snapshot) =>
                           Text(
                             "Time: ${snapshot.data}",
                             textAlign: TextAlign.start,
