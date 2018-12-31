@@ -80,8 +80,10 @@ class ChikChakBloc {
 
   Stream<int> get curNum => _curNumSubject.stream;
 
-  Stream<String> get curStopwatch =>
-      _curStopwatchSubject.stream.map(formatStopwatch);
+  Stream<String> get curStopwatch => _curStopwatchSubject.stream
+      .map((duration) => duration.inMilliseconds)
+      .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
+      .map(_dateFormatter.format);
 
   void dispose() {
     _clicksController.close();
@@ -124,11 +126,6 @@ class ChikChakBloc {
         Timer.periodic(Duration(milliseconds: 30), (_) async {
       _curStopwatchSubject.add(_stopwatch.elapsed);
     });
-  }
-
-  String formatStopwatch(Duration elapsed) {
-    var time = DateTime.fromMillisecondsSinceEpoch(elapsed.inMilliseconds);
-    return _dateFormatter.format(time);
   }
 
   void winGame() {
