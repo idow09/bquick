@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
-  static const TILES_COUNT = 25;
-  static const WIDTH = 5;
+  static const TILES_COUNT = 9;
+  static const WIDTH = 3;
 
   final Random _random = Random();
 
