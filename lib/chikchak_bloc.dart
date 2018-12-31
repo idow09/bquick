@@ -27,7 +27,7 @@ class ChikChakBloc {
 
   BehaviorSubject<int> _curNumSubject;
 
-  BehaviorSubject<String> _curStopwatchSubject;
+  BehaviorSubject<Duration> _curStopwatchSubject;
 
   final StreamController<int> _clicksController = StreamController<int>();
 
@@ -41,8 +41,8 @@ class ChikChakBloc {
 
     _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
 
-    _curStopwatchSubject = BehaviorSubject<String>(
-        seedValue: formatStopwatch(Duration(seconds: 0)));
+    _curStopwatchSubject =
+        BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -80,7 +80,8 @@ class ChikChakBloc {
 
   Stream<int> get curNum => _curNumSubject.stream;
 
-  Stream<String> get curStopwatch => _curStopwatchSubject.stream;
+  Stream<String> get curStopwatch =>
+      _curStopwatchSubject.stream.map(formatStopwatch);
 
   void dispose() {
     _clicksController.close();
@@ -108,7 +109,7 @@ class ChikChakBloc {
   void publishState() {
     _gameStateSubject.add(UnmodifiableListView(_curState));
     _curNumSubject.add(_curNum);
-    _curStopwatchSubject.add(formatStopwatch(_stopwatch.elapsed));
+    _curStopwatchSubject.add(_stopwatch.elapsed);
   }
 
   void restartGame() {
@@ -121,7 +122,7 @@ class ChikChakBloc {
     _stopwatch.start();
     _updateStopwatchTimer =
         Timer.periodic(Duration(milliseconds: 30), (_) async {
-      _curStopwatchSubject.add(formatStopwatch(_stopwatch.elapsed));
+      _curStopwatchSubject.add(_stopwatch.elapsed);
     });
   }
 
