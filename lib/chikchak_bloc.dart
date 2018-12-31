@@ -55,8 +55,7 @@ class ChikChakBloc {
     });
     _stopwatch.stop();
     _stopwatch.reset();
-//    startStopwatchStream();
-    _stopwatch.start();
+    startStopwatchStream();
   }
 
   Sink<int> get clicks => _clicksController.sink;
@@ -94,13 +93,19 @@ class ChikChakBloc {
   void publishState() {
     _gameStateSubject.add(UnmodifiableListView(_curState));
     _curNumSubject.add(_curNum);
-    _curStopwatchSubject.add(_stopwatch.elapsed);
   }
 
   void restartGame() {
     print("Restarting game.");
     resetState();
     publishState();
+  }
+
+  void startStopwatchStream() async {
+    _stopwatch.start();
+    Timer.periodic(Duration(milliseconds: 30), (_) async {
+      _curStopwatchSubject.add(_stopwatch.elapsed);
+    });
   }
 }
 
