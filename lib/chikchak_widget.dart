@@ -32,7 +32,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                       onTap: () {
                         _bloc.clicks.add(tile.num);
                       },
-                      child: Tile(Text('${tile.num}')),
+                      child: Tile(child: Text('${tile.num}')),
                     );
                   } else {
                     return Container();
@@ -45,7 +45,7 @@ class ChikChakGameState extends State<ChikChakGame> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Tile(
-              Column(
+              child: Column(
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -77,6 +77,24 @@ class ChikChakGameState extends State<ChikChakGame> {
               ),
             ),
           ),
+        ),
+        StreamBuilder(
+          stream: _bloc.gameStatus,
+          builder: (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
+            if (snapshot.data == GameStatus.finished) {
+              final x = "17:49.249";
+              return Center(
+                child: Tile(
+                    child: Text(
+                  "Well Done, You Win!\nYour Score:\n$x milliseconds",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 25),
+                )),
+              );
+            } else {
+              return Container();
+            }
+          },
         )
       ],
     );
@@ -86,7 +104,7 @@ class ChikChakGameState extends State<ChikChakGame> {
 class Tile extends StatelessWidget {
   final child;
 
-  const Tile(this.child, {Key key}) : super(key: key);
+  const Tile({this.child, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

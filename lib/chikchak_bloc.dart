@@ -29,6 +29,8 @@ class ChikChakBloc {
 
   BehaviorSubject<Duration> _curStopwatchSubject;
 
+  BehaviorSubject<GameStatus> _gameStatusSubject;
+
   final StreamController<int> _clicksController = StreamController<int>();
 
   final StreamController<void> _restartsController = StreamController<void>();
@@ -43,6 +45,9 @@ class ChikChakBloc {
 
     _curStopwatchSubject =
         BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
+
+    _gameStatusSubject =
+        BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -85,19 +90,22 @@ class ChikChakBloc {
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_dateFormatter.format);
 
+  Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
+
   void dispose() {
     _clicksController.close();
     _restartsController.close();
     _gameStateSubject.close();
     _curNumSubject.close();
     _curStopwatchSubject.close();
+    _gameStatusSubject.close();
   }
 
   void handleClickEvent(int numClicked) {
     print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
       if (numClicked == 1) startStopwatchStream();
-      if (numClicked == TILES_COUNT) winGame();
+      if (numClicked == TILES_COUNT) endGame();
       updateState(numClicked);
       publishState();
     }
@@ -111,13 +119,14 @@ class ChikChakBloc {
   void publishState() {
     _gameStateSubject.add(UnmodifiableListView(_curState));
     _curNumSubject.add(_curNum);
-    _curStopwatchSubject.add(_stopwatch.elapsed);
   }
 
   void restartGame() {
     print("Restarting game.");
     resetState();
     publishState();
+    _curStopwatchSubject.add(_stopwatch.elapsed);
+    _gameStatusSubject.add(GameStatus.running);
   }
 
   void startStopwatchStream() async {
@@ -128,11 +137,11 @@ class ChikChakBloc {
     });
   }
 
-  void winGame() {
+  void endGame() {
     _stopwatch.stop();
     final ms = _stopwatch.elapsedMilliseconds;
-    print("You did it! In only $ms milliseconds!");
-//    publishWin(time)
+    print("Game ended. Total time: $ms milliseconds.");
+    _gameStatusSubject.add(GameStatus.finished);
   }
 }
 
@@ -142,3 +151,5 @@ class ChikChakTile {
 
   ChikChakTile(this.num, this.visible);
 }
+
+enum GameStatus { running, finished }
