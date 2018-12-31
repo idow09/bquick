@@ -94,6 +94,7 @@ class ChikChakBloc {
     print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
       if (numClicked == 1) startStopwatchStream();
+      if (numClicked == TILES_COUNT) winGame();
       updateState(numClicked);
       publishState();
     }
@@ -127,6 +128,13 @@ class ChikChakBloc {
   String formatStopwatch(Duration elapsed) {
     var time = DateTime.fromMillisecondsSinceEpoch(elapsed.inMilliseconds);
     return _dateFormatter.format(time);
+  }
+
+  void winGame() {
+    _stopwatch.stop();
+    final ms = _stopwatch.elapsedMilliseconds;
+    print("You did it! In only $ms milliseconds!");
+//    publishWin(time)
   }
 }
 
