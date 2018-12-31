@@ -6,6 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChikChakBloc {
+  static const TILES_COUNT = 25;
+  static const WIDTH = 5;
+
   final Random _random = Random();
 
   final Stopwatch _stopwatch = Stopwatch();
@@ -51,7 +54,7 @@ class ChikChakBloc {
   }
 
   void resetState() {
-    _curState = List.generate(25, (i) => ChikChakTile(i + 1, true));
+    _curState = List.generate(TILES_COUNT, (i) => ChikChakTile(i + 1, true));
     _curState.shuffle(_random);
     _curNum = 1;
 

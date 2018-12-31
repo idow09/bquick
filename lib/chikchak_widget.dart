@@ -25,7 +25,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                 AsyncSnapshot<List<ChikChakTile>> snapshot) {
               return GridView.count(
                 physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: 5,
+                crossAxisCount: ChikChakBloc.WIDTH,
                 children: snapshot.data.map((tile) {
                   if (tile.visible) {
                     return GestureDetector(
