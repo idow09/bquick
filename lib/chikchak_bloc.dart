@@ -58,7 +58,6 @@ class ChikChakBloc {
     });
     _stopwatch.stop();
     _stopwatch.reset();
-    startStopwatchStream();
   }
 
   Sink<int> get clicks => _clicksController.sink;
@@ -83,6 +82,7 @@ class ChikChakBloc {
   void handleClickEvent(int numClicked) {
     print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
+      if (numClicked == 1) startStopwatchStream();
       updateState(numClicked);
       publishState();
     }
