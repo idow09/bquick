@@ -18,6 +18,8 @@ class ChikChakBloc {
 
   int _curNum;
 
+  Timer _updateStopwatchTimer;
+
   BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
 
   BehaviorSubject<int> _curNumSubject;
@@ -56,6 +58,8 @@ class ChikChakBloc {
     _curState.asMap().forEach((i, tile) {
       _num2index[tile.num] = i;
     });
+
+    _updateStopwatchTimer?.cancel();
     _stopwatch.stop();
     _stopwatch.reset();
   }
@@ -106,7 +110,7 @@ class ChikChakBloc {
 
   void startStopwatchStream() async {
     _stopwatch.start();
-    Timer.periodic(Duration(milliseconds: 30), (_) async {
+    _updateStopwatchTimer = Timer.periodic(Duration(milliseconds: 30), (_) async {
       _curStopwatchSubject.add(formatStopwatch(_stopwatch.elapsed));
     });
   }
