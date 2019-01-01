@@ -45,8 +45,58 @@ class ChikChakGameState extends State<ChikChakGame> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Tile(
-              child: Column(
+              child: Row(
                 children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: StreamBuilder(
+                          stream: _bloc.bestTime,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            return Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Icon(Icons.arrow_upward),
+                                ),
+                                Text(
+                                  "${snapshot.data}",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: StreamBuilder(
+                          stream: _bloc.curStopwatch,
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            return Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Icon(Icons.timer),
+                                ),
+                                Text(
+                                  "${snapshot.data}",
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(fontSize: 25),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: StreamBuilder(
@@ -54,25 +104,12 @@ class ChikChakGameState extends State<ChikChakGame> {
                       builder:
                           (BuildContext context, AsyncSnapshot<int> snapshot) =>
                               Text(
-                                "Current: ${snapshot.data}",
+                                "# ${snapshot.data}",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(fontSize: 25),
                               ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StreamBuilder(
-                      stream: _bloc.curStopwatch,
-                      builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) =>
-                          Text(
-                            "Time: ${snapshot.data}",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(fontSize: 25),
-                          ),
-                    ),
-                  )
                 ],
               ),
             ),

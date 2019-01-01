@@ -10,49 +10,39 @@ class ChikChakBloc {
   static const TILES_COUNT = WIDTH * WIDTH;
 
   final Random _random = Random();
-
   final Stopwatch _stopwatch = Stopwatch();
-
   final Map<int, int> _num2index = Map();
-
   final DateFormat _dateFormatter = new DateFormat('mm:ss.SSS');
 
+  final StreamController<int> _clicksController = StreamController<int>();
+  final StreamController<void> _restartsController = StreamController<void>();
+
   List<ChikChakTile> _curState;
-
   int _curNum;
-
+  Duration _bestTime;
   Timer _updateStopwatchTimer;
 
   BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
-
   BehaviorSubject<int> _curNumSubject;
-
   BehaviorSubject<Duration> _curStopwatchSubject;
-
   BehaviorSubject<GameStatus> _gameStatusSubject;
-
-  final StreamController<int> _clicksController = StreamController<int>();
-
-  final StreamController<void> _restartsController = StreamController<void>();
+  BehaviorSubject<String> _bestTimeSubject;
 
   ChikChakBloc() {
     resetState();
 
     _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
         seedValue: UnmodifiableListView(_curState));
-
     _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
-
     _curStopwatchSubject =
         BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
-
     _gameStatusSubject =
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
+    _bestTimeSubject = BehaviorSubject<String>(seedValue: "00:02.287"); // TODO
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
     });
-
     _restartsController.stream.listen((_) async {
       restartGame();
     });
@@ -77,7 +67,6 @@ class ChikChakBloc {
   }
 
   Sink<int> get clicks => _clicksController.sink;
-
   Sink<void> get restarts => _restartsController.sink;
 
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
@@ -92,6 +81,8 @@ class ChikChakBloc {
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
+  Stream<String> get bestTime => _bestTimeSubject.stream;
+
   void dispose() {
     _clicksController.close();
     _restartsController.close();
@@ -99,6 +90,7 @@ class ChikChakBloc {
     _curNumSubject.close();
     _curStopwatchSubject.close();
     _gameStatusSubject.close();
+    _bestTimeSubject.close();
   }
 
   void handleClickEvent(int numClicked) {
