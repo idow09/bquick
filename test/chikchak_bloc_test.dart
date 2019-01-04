@@ -15,30 +15,58 @@ void main() {
       setUp(() async => _initialState = await _bloc.gameState.first);
 
       test('are all visible', () async {
-        var _initialVisibilityState = _initialState.map((tile) => tile.visible);
-
-        expect(_initialVisibilityState, everyElement(equals(true)));
+        testAllTilesAreVisible(_initialState);
       });
 
       test('are randomly ordered', () async {
-        final _orderedNumList =
-            List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1);
-        var _initialNumList = _initialState.map((tile) => tile.num);
-
-        expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
+        testTilesAreRandomlyOrdered(_initialState);
       });
     });
 
     test('current number is 1', () async {
-      expect(_bloc.curNum, emits(1));
+      testCurrentNumberIsOne(_bloc);
     });
 
     test("stopwatch is reset", () async {
-      expect(_bloc.curStopwatch, emits(equals("00:00.000")));
+      testStopwatchIsReset(_bloc);
     });
 
     test("game status is 'running'", () async {
-      expect(_bloc.gameStatus, emits(equals(GameStatus.running)));
+      testGameStatusIsRunning(_bloc);
+    });
+  });
+
+  group('After restart ', () {
+    group('tiles ', () {
+      UnmodifiableListView<ChikChakTile> _initialState;
+      setUp(() async {
+        await Future(() async {
+          _bloc.clicks.add(1);
+          _bloc.clicks.add(2);
+          _bloc.restarts.add(null);
+        });
+        _initialState = await _bloc.gameState.first;
+      });
+
+      test('are all visible', () async {
+        testAllTilesAreVisible(_initialState);
+      });
+
+      test('are randomly ordered', () async {
+        testTilesAreRandomlyOrdered(_initialState);
+      });
+    });
+
+    test('current number is 1', () async {
+      testCurrentNumberIsOne(_bloc);
+    });
+
+    test("stopwatch is reset", () async {
+      testStopwatchIsReset(_bloc);
+    });
+
+    test("game status is 'running'", () async {
+      testGameStatusIsRunning(_bloc);
     });
   });
 
@@ -85,3 +113,28 @@ void main() {
     });
   });
 }
+
+void testAllTilesAreVisible(UnmodifiableListView<ChikChakTile> _initialState) {
+  var _initialVisibilityState = _initialState.map((tile) => tile.visible);
+
+  expect(_initialVisibilityState, everyElement(equals(true)));
+}
+
+void testTilesAreRandomlyOrdered(
+    UnmodifiableListView<ChikChakTile> _initialState) {
+  final _orderedNumList = List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1);
+  var _initialNumList = _initialState.map((tile) => tile.num);
+
+  expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
+}
+
+void testGameStatusIsRunning(ChikChakBloc _bloc) {
+  expect(_bloc.gameStatus, emits(equals(GameStatus.running)));
+}
+
+void testStopwatchIsReset(ChikChakBloc _bloc) {
+  expect(_bloc.curStopwatch, emits(equals("00:00.000")));
+}
+
+void testCurrentNumberIsOne(ChikChakBloc _bloc) =>
+    expect(_bloc.curNum, emits(1));
