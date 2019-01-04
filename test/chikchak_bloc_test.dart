@@ -2,7 +2,7 @@ import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tiles ', () {
+  group('Tiles in initial state ', () {
     ChikChakBloc _bloc;
     setUp(() {
       _bloc = ChikChakBloc();
