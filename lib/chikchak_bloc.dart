@@ -12,7 +12,7 @@ class ChikChakBloc {
   final Random _random = Random();
   final Stopwatch _stopwatch = Stopwatch();
   final Map<int, int> _num2index = Map();
-  final DateFormat _dateFormatter = new DateFormat('mm:ss.SSS');
+  final DateFormat _timeFormatter = new DateFormat('mm:ss.SSS');
 
   final StreamController<int> _clicksController = StreamController<int>();
   final StreamController<void> _restartsController = StreamController<void>();
@@ -77,7 +77,7 @@ class ChikChakBloc {
   Stream<String> get curStopwatch => _curStopwatchSubject.stream
       .map((duration) => duration.inMilliseconds)
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
-      .map(_dateFormatter.format);
+      .map(_timeFormatter.format);
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
