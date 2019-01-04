@@ -2,12 +2,12 @@ import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tiles in initial state ', () {
-    ChikChakBloc _bloc;
-    setUp(() {
-      _bloc = ChikChakBloc();
-    });
+  ChikChakBloc _bloc;
+  setUp(() {
+    _bloc = ChikChakBloc();
+  });
 
+  group('Tiles in initial state ', () {
     test('are all visible', () async {
       final _initialState = await _bloc.gameState.first;
       var _initialVisibilityState = _initialState.map((tile) => tile.visible);
