@@ -32,6 +32,10 @@ void main() {
     test('current number is 1', () async {
       expect(_bloc.curNum, emits(1));
     });
+
+    test("game status is 'running'", () async {
+      expect(_bloc.gameStatus, emits(equals(GameStatus.running)));
+    });
   });
 
   group("After 1 is clicked ", () {
@@ -63,6 +67,10 @@ void main() {
           (await _bloc.gameState.first).map((tile) => tile.visible);
 
       expect(_visibilityState, everyElement(equals(false)));
+    });
+
+    test("game status is 'finished'", () async {
+      expect(_bloc.gameStatus, emits(equals(GameStatus.finished)));
     });
   });
 }
