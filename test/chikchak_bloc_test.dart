@@ -33,6 +33,10 @@ void main() {
       expect(_bloc.curNum, emits(1));
     });
 
+    test("stopwatch is reset", () async {
+      expect(_bloc.curStopwatch, emits(equals("00:00.000")));
+    });
+
     test("game status is 'running'", () async {
       expect(_bloc.gameStatus, emits(equals(GameStatus.running)));
     });
@@ -51,6 +55,13 @@ void main() {
 
     test("current number is incremented", () async {
       expect(_bloc.curNum, emits(2));
+    });
+
+    test("stopwatch is running", () async {
+      await Future.delayed(Duration(milliseconds: 50));
+      var nonZero = isNot(equals("00:00.000"));
+      // test that stopwatch is constantly emitting time strings
+      expect(_bloc.curStopwatch, emitsInOrder([nonZero, nonZero]));
     });
   });
 

@@ -67,6 +67,7 @@ class ChikChakBloc {
   }
 
   Sink<int> get clicks => _clicksController.sink;
+
   Sink<void> get restarts => _restartsController.sink;
 
   Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
