@@ -30,9 +30,7 @@ void main() {
     });
 
     test('current number is 1', () async {
-      final _firstCurNum = await _bloc.curNum.first;
-
-      expect(_firstCurNum, equals(1));
+      expect(_bloc.curNum, emits(1));
     });
   });
 
@@ -48,8 +46,23 @@ void main() {
     });
 
     test("current number is incremented", () async {
-      var _curNum = await _bloc.curNum.first;
-      expect(_curNum, equals(2));
+      expect(_bloc.curNum, emits(2));
+    });
+  });
+
+  group("After all numbers are clicked ", () {
+    setUp(() async {
+      List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
+        _bloc.clicks.add(i);
+      });
+      await Future.delayed(Duration(milliseconds: 100));
+    });
+
+    test("all tiles are invisible", () async {
+      var _visibilityState =
+          (await _bloc.gameState.first).map((tile) => tile.visible);
+
+      expect(_visibilityState, everyElement(equals(false)));
     });
   });
 }
