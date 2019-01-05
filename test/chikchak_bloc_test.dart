@@ -38,22 +38,21 @@ void main() {
 
   group('After restart ', () {
     group('tiles ', () {
-      UnmodifiableListView<ChikChakTile> _initialState;
+      UnmodifiableListView<ChikChakTile> _afterRestartState;
       setUp(() async {
-        await Future(() async {
-          _bloc.clicks.add(1);
-          _bloc.clicks.add(2);
-          _bloc.restarts.add(null);
-        });
-        _initialState = await _bloc.gameState.first;
+        _bloc.clicks.add(1);
+        _bloc.clicks.add(2);
+        _bloc.restarts.add(null);
+        await drainStateStream(_bloc.gameState, 3);
+        _afterRestartState = await _bloc.gameState.first;
       });
 
       test('are all visible', () async {
-        testAllTilesAreVisible(_initialState);
+        testAllTilesAreVisible(_afterRestartState);
       });
 
       test('are randomly ordered', () async {
-        testTilesAreRandomlyOrdered(_initialState);
+        testTilesAreRandomlyOrdered(_afterRestartState);
       });
     });
 
@@ -98,7 +97,7 @@ void main() {
   group("After all tiles are clicked ", () {
     setUp(() async {
       clickAllTiles(_bloc.clicks);
-      await drainStateStream(_bloc.gameState);
+      await drainStateStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
     });
 
     test("they are invisible", () async {
@@ -114,16 +113,16 @@ void main() {
   });
 }
 
-void clickAllTiles(Sink<int> _clicks) {
+void clickAllTiles(Sink<int> clicks) {
   List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
-    _clicks.add(i);
+    clicks.add(i);
   });
 }
 
-Future<void> drainStateStream(Stream _stream) async {
+Future<void> drainStateStream(Stream stream, int count) async {
   var _count = 0;
-  await for (var _ in _stream) {
-    if (++_count == ChikChakBloc.TILES_COUNT + 1) {
+  await for (var _ in stream) {
+    if (++_count == count) {
       break;
     }
   }
