@@ -93,13 +93,13 @@ void main() {
     });
   });
 
-  group("After all numbers are clicked ", () {
+  group("After all tiles are clicked ", () {
     setUp(() async {
       clickAllTiles(_bloc.clicks);
       await drainStateStream(_bloc.gameState);
     });
 
-    test("all tiles are invisible", () async {
+    test("they are invisible", () async {
       var _gameVisibilityStateStream =
           _bloc.gameState.map((list) => list.map((tile) => tile.visible));
 
