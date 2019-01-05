@@ -97,11 +97,15 @@ class ChikChakBloc {
   void handleClickEvent(int numClicked) {
     print('User clicked on $numClicked.');
     if (numClicked == _curNum) {
-      if (numClicked == 1) startStopwatchStream();
-      if (numClicked == TILES_COUNT) endGame();
-      updateState(numClicked);
-      publishState();
+      handleCorrectNumClicked(numClicked);
     }
+  }
+
+  void handleCorrectNumClicked(int numClicked) {
+    if (numClicked == 1) startStopwatchStream();
+    if (numClicked == TILES_COUNT) endGame();
+    updateState(numClicked);
+    publishState();
   }
 
   void updateState(int numClicked) {
