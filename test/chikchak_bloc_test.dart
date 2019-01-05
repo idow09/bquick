@@ -80,7 +80,7 @@ void main() {
           .map((list) => list.where((tile) => !tile.visible))
           .map((list) => list.map((tile) => tile.num));
 
-      expect(_nonVisibleTilesNumStream, emits(equals([1])));
+      expect(_nonVisibleTilesNumStream, emits([1]));
     });
 
     test("current number is incremented", () async {
@@ -88,7 +88,7 @@ void main() {
     });
 
     test("stopwatch is running", () async {
-      var zero = equals("00:00.000");
+      var zero = "00:00.000";
       var nonZero = isNot(zero);
       // test that stopwatch is constantly emitting time strings
       expect(_bloc.curStopwatch, emitsInOrder([zero, nonZero, nonZero]));
@@ -105,11 +105,11 @@ void main() {
       var _gameVisibilityStateStream =
           _bloc.gameState.map((list) => list.map((tile) => tile.visible));
 
-      expect(_gameVisibilityStateStream, emits(everyElement(equals(false))));
+      expect(_gameVisibilityStateStream, emits(everyElement(false)));
     });
 
     test("game status is 'finished'", () async {
-      expect(_bloc.gameStatus, emits(equals(GameStatus.finished)));
+      expect(_bloc.gameStatus, emits(GameStatus.finished));
     });
   });
 }
@@ -132,7 +132,7 @@ Future<void> drainStateStream(Stream _stream) async {
 void testAllTilesAreVisible(UnmodifiableListView<ChikChakTile> _initialState) {
   var _initialVisibilityState = _initialState.map((tile) => tile.visible);
 
-  expect(_initialVisibilityState, everyElement(equals(true)));
+  expect(_initialVisibilityState, everyElement(true));
 }
 
 void testTilesAreRandomlyOrdered(
@@ -144,11 +144,11 @@ void testTilesAreRandomlyOrdered(
 }
 
 void testGameStatusIsRunning(ChikChakBloc _bloc) {
-  expect(_bloc.gameStatus, emits(equals(GameStatus.running)));
+  expect(_bloc.gameStatus, emits(GameStatus.running));
 }
 
 void testStopwatchIsReset(ChikChakBloc _bloc) {
-  expect(_bloc.curStopwatch, emits(equals("00:00.000")));
+  expect(_bloc.curStopwatch, emits("00:00.000"));
 }
 
 void testCurrentNumberIsOne(ChikChakBloc _bloc) =>
