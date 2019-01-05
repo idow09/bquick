@@ -119,6 +119,9 @@ void main() {
     test("game status is 'finished'", () async {
       expect(_bloc.gameStatus, emits(GameStatus.finished));
     });
+
+    test("stopwatch is stopped", () async {},
+        skip: "TODO: figure out how to test that stopwatch stopped");
   });
 }
 
