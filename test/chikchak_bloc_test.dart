@@ -100,10 +100,10 @@ void main() {
     });
 
     test("all tiles are invisible", () async {
-      var _visibilityState =
-          (await _bloc.gameState.first).map((tile) => tile.visible);
+      var _gameVisibilityStateStream =
+          _bloc.gameState.map((list) => list.map((tile) => tile.visible));
 
-      expect(_visibilityState, everyElement(equals(false)));
+      expect(_gameVisibilityStateStream, emits(everyElement(equals(false))));
     });
 
     test("game status is 'finished'", () async {
