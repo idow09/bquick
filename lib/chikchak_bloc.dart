@@ -10,12 +10,13 @@ class ChikChakBloc {
   static const TILES_COUNT = WIDTH * WIDTH;
 
   final Random _random = Random();
-  final Stopwatch _stopwatch = Stopwatch();
   final Map<int, int> _num2index = Map();
   final DateFormat _timeFormatter = new DateFormat('mm:ss.SSS');
-
   final StreamController<int> _clicksController = StreamController<int>();
   final StreamController<void> _restartsController = StreamController<void>();
+
+  Stopwatch _stopwatch;
+  Function _periodicRunner;
 
   List<ChikChakTile> _curState;
   int _curNum;
@@ -28,7 +29,17 @@ class ChikChakBloc {
   BehaviorSubject<GameStatus> _gameStatusSubject;
   BehaviorSubject<String> _bestTimeSubject;
 
-  ChikChakBloc() {
+  ChikChakBloc({Stopwatch stopwatch, Function periodicRunner}) {
+    if (stopwatch == null) {
+      _stopwatch = Stopwatch();
+    } else {
+      _stopwatch = stopwatch;
+    }
+    if (periodicRunner == null) {
+      _periodicRunner = (d, c) => Timer.periodic(d, c);
+    } else {
+      _periodicRunner = periodicRunner;
+    }
     resetState();
 
     _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
@@ -129,7 +140,7 @@ class ChikChakBloc {
   void startStopwatchStream() async {
     _stopwatch.start();
     _updateStopwatchTimer =
-        Timer.periodic(Duration(milliseconds: 30), (_) async {
+        _periodicRunner(Duration(milliseconds: 30), (_) async {
       _curStopwatchSubject.add(_stopwatch.elapsed);
     });
   }

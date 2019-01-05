@@ -1,12 +1,24 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:chik_chak/chikchak_bloc.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+
+class MockStopwatch extends Mock implements Stopwatch {}
 
 void main() {
   ChikChakBloc _bloc;
   setUp(() {
-    _bloc = ChikChakBloc();
+    var _fastStopwatch = MockStopwatch();
+    var counter = 0;
+    when(_fastStopwatch.elapsed)
+        .thenAnswer((_) => Duration(seconds: counter++));
+
+    var _fastRunner = (_, c) => Timer.periodic(Duration(milliseconds: 5), c);
+
+    _bloc =
+        ChikChakBloc(stopwatch: _fastStopwatch, periodicRunner: _fastRunner);
   });
 
   group('In initial state ', () {
@@ -20,7 +32,7 @@ void main() {
 
       test('are all visible after 2 clicked', () async {
         _bloc.clicks.add(2);
-        drainStateStream(_bloc.gameState, 2);
+        drainStream(_bloc.gameState, 2);
         var _state = await _bloc.gameState.first;
         testAllTilesAreVisible(_state);
       });
@@ -50,7 +62,7 @@ void main() {
         _bloc.clicks.add(1);
         _bloc.clicks.add(2);
         _bloc.restarts.add(null);
-        await drainStateStream(_bloc.gameState, 3);
+        await drainStream(_bloc.gameState, 3);
         _afterRestartState = await _bloc.gameState.first;
       });
 
@@ -80,7 +92,7 @@ void main() {
     setUp(() async {
       _bloc.clicks.add(1);
       _bloc.clicks.add(3);
-      await drainStateStream(_bloc.gameState, 2);
+      await drainStream(_bloc.gameState, 2);
     });
 
     test("only 1 is invisible", () async {
@@ -96,17 +108,17 @@ void main() {
     });
 
     test("stopwatch is running", () async {
-      var zero = "00:00.000";
-      var nonZero = isNot(zero);
+      var nonZero = isNot("00:00.000");
       // test that stopwatch is constantly emitting time strings
-      expect(_bloc.curStopwatch, emitsInOrder([zero, nonZero, nonZero]));
+      await drainStream(_bloc.curStopwatch, 5); // ignore first zeros
+      expect(_bloc.curStopwatch, emitsInOrder([nonZero, nonZero, nonZero]));
     });
   });
 
   group("After all tiles are clicked ", () {
     setUp(() async {
       clickAllTiles(_bloc.clicks);
-      await drainStateStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
+      await drainStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
     });
 
     test("they are invisible", () async {
@@ -131,7 +143,7 @@ void clickAllTiles(Sink<int> clicks) {
   });
 }
 
-Future<void> drainStateStream(Stream stream, int count) async {
+Future<void> drainStream(Stream stream, int count) async {
   var _count = 0;
   await for (var _ in stream) {
     if (++_count == count) {
