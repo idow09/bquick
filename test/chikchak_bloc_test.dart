@@ -18,6 +18,13 @@ void main() {
         testAllTilesAreVisible(_initialState);
       });
 
+      test('are all visible after 2 clicked', () async {
+        _bloc.clicks.add(2);
+        drainStateStream(_bloc.gameState, 2);
+        var _state = await _bloc.gameState.first;
+        testAllTilesAreVisible(_state);
+      });
+
       test('are randomly ordered', () async {
         testTilesAreRandomlyOrdered(_initialState);
       });
@@ -69,9 +76,11 @@ void main() {
     });
   });
 
-  group("After 1 is clicked ", () {
-    setUp(() {
+  group("After 1, 3 is clicked ", () {
+    setUp(() async {
       _bloc.clicks.add(1);
+      _bloc.clicks.add(3);
+      await drainStateStream(_bloc.gameState, 2);
     });
 
     test("only 1 is invisible", () async {
@@ -82,7 +91,7 @@ void main() {
       expect(_nonVisibleTilesNumStream, emits([1]));
     });
 
-    test("current number is incremented", () async {
+    test("current number is incremented to 2", () async {
       expect(_bloc.curNum, emits(2));
     });
 
