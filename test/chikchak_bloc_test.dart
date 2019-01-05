@@ -95,10 +95,8 @@ void main() {
 
   group("After all numbers are clicked ", () {
     setUp(() async {
-      List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
-        _bloc.clicks.add(i);
-      });
-      await Future.delayed(Duration(milliseconds: 100));
+      clickAllTiles(_bloc.clicks);
+      await drainStateStream(_bloc.gameState);
     });
 
     test("all tiles are invisible", () async {
@@ -112,6 +110,21 @@ void main() {
       expect(_bloc.gameStatus, emits(equals(GameStatus.finished)));
     });
   });
+}
+
+void clickAllTiles(Sink<int> _clicks) {
+  List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
+    _clicks.add(i);
+  });
+}
+
+Future<void> drainStateStream(Stream _stream) async {
+  var _count = 0;
+  await for (var _ in _stream) {
+    if (++_count == ChikChakBloc.TILES_COUNT + 1) {
+      break;
+    }
+  }
 }
 
 void testAllTilesAreVisible(UnmodifiableListView<ChikChakTile> _initialState) {
