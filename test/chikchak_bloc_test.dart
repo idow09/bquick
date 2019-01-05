@@ -86,10 +86,10 @@ void main() {
     });
 
     test("stopwatch is running", () async {
-      await Future.delayed(Duration(milliseconds: 50));
-      var nonZero = isNot(equals("00:00.000"));
+      var zero = equals("00:00.000");
+      var nonZero = isNot(zero);
       // test that stopwatch is constantly emitting time strings
-      expect(_bloc.curStopwatch, emitsInOrder([nonZero, nonZero]));
+      expect(_bloc.curStopwatch, emitsInOrder([zero, nonZero, nonZero]));
     });
   });
 
