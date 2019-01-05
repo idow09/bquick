@@ -75,10 +75,12 @@ void main() {
       _bloc.clicks.add(1);
     });
 
-    test("it's no longer visible", () async {
-      var _state = await _bloc.gameState.first;
-      expect(_state.where((tile) => tile.num == 1).map((tile) => tile.visible),
-          equals([false]));
+    test("only 1 is invisible", () async {
+      var _nonVisibleTilesNumStream = _bloc.gameState
+          .map((list) => list.where((tile) => !tile.visible))
+          .map((list) => list.map((tile) => tile.num));
+
+      expect(_nonVisibleTilesNumStream, emits(equals([1])));
     });
 
     test("current number is incremented", () async {
