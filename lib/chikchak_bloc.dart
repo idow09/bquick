@@ -27,7 +27,7 @@ class ChikChakBloc {
   BehaviorSubject<int> _curNumSubject;
   BehaviorSubject<Duration> _curStopwatchSubject;
   BehaviorSubject<GameStatus> _gameStatusSubject;
-  BehaviorSubject<String> _bestTimeSubject;
+  BehaviorSubject<Duration> _bestTimeSubject;
 
   ChikChakBloc({Stopwatch stopwatch, Function periodicRunner}) {
     if (stopwatch == null) {
@@ -49,7 +49,7 @@ class ChikChakBloc {
         BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
     _gameStatusSubject =
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
-    _bestTimeSubject = BehaviorSubject<String>(seedValue: "00:02.287"); // TODO
+    _bestTimeSubject = BehaviorSubject<Duration>();
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -93,7 +93,11 @@ class ChikChakBloc {
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
-  Stream<String> get bestTime => _bestTimeSubject.stream;
+  Stream<String> get bestTime => _bestTimeSubject.stream
+      .map((duration) => duration.inMilliseconds)
+      .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
+      .map(_timeFormatter.format)
+      .startWith("");
 
   void dispose() {
     _clicksController.close();
@@ -149,6 +153,10 @@ class ChikChakBloc {
     _stopwatch.stop();
     final ms = _stopwatch.elapsedMilliseconds;
     print("Game ended. Total time: $ms milliseconds.");
+    if (_bestTime == null || _stopwatch.elapsed < _bestTime) {
+      _bestTime = _stopwatch.elapsed;
+      _bestTimeSubject.add(_bestTime);
+    }
     _gameStatusSubject.add(GameStatus.finished);
   }
 }
