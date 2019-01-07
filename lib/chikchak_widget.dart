@@ -1,19 +1,10 @@
 import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:flutter/material.dart';
 
-class ChikChakGame extends StatefulWidget {
+class ChikChakGame extends StatelessWidget {
   final ChikChakBloc _bloc;
 
   ChikChakGame(this._bloc, {Key key}) : super(key: key);
-
-  @override
-  ChikChakGameState createState() => ChikChakGameState(_bloc);
-}
-
-class ChikChakGameState extends State<ChikChakGame> {
-  ChikChakBloc _bloc;
-
-  ChikChakGameState(this._bloc);
 
   @override
   Widget build(BuildContext context) {
