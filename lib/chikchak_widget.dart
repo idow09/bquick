@@ -71,15 +71,24 @@ class ChikChakGame extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: StreamBuilder(
-                      stream: _bloc.curNum,
-                      builder:
-                          (BuildContext context, AsyncSnapshot<int> snapshot) =>
-                              Text(
-                                "# ${snapshot.data}",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontSize: 25),
-                              ),
-                    ),
+                        stream: _bloc.gameStatus,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<GameStatus> snapshot) {
+                          if (snapshot.data == GameStatus.running) {
+                            return StreamBuilder(
+                              stream: _bloc.curNum,
+                              builder: (BuildContext context,
+                                      AsyncSnapshot<int> snapshot) =>
+                                  Text(
+                                    "# ${snapshot.data}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
                   ),
                 ],
               ),
