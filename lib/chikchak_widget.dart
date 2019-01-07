@@ -121,15 +121,23 @@ class ChikChakGameState extends State<ChikChakGame> {
             if (snapshot.data == GameStatus.finished) {
               return Center(
                 child: Tile(
-                    child: StreamBuilder(
-                  stream: _bloc.curStopwatch,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<String> snapshot) =>
+                    child: Column(
+                  children: <Widget>[
+                    Icon(
+                      Icons.check,
+                      size: 150,
+                    ),
+                    StreamBuilder(
+                      stream: _bloc.curStopwatch,
+                      builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) =>
                           Text(
-                            "Well Done!\nYour Time:\n${snapshot.data}",
+                            "${snapshot.data}",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 25),
                           ),
+                    ),
+                  ],
                 )),
               );
             } else {
