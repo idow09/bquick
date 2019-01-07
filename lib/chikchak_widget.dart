@@ -10,7 +10,7 @@ class ChikChakGame extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        ChikChakGrid(_bloc),
+        Expanded(child: ChikChakGrid(_bloc)),
         Positioned(
           bottom: 0,
           child: Padding(
