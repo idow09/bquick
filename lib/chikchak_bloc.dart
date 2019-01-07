@@ -97,7 +97,7 @@ class ChikChakBloc {
       .map((duration) => duration.inMilliseconds)
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_timeFormatter.format)
-      .startWith("--:--.---");
+      .startWith("- - : - - . - - -");
 
   void dispose() {
     _clicksController.close();
