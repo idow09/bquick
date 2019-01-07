@@ -126,7 +126,7 @@ class ChikChakGameState extends State<ChikChakGame> {
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) =>
                           Text(
-                            "Well Done!\nYour Time:\n${snapshot.data} milliseconds",
+                            "Well Done!\nYour Time:\n${snapshot.data} ms",
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 25),
                           ),
