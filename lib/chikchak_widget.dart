@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ChikChakGame extends StatelessWidget {
   final ChikChakBloc _bloc;
 
-  ChikChakGame(this._bloc, {Key key}) : super(key: key);
+  const ChikChakGame(this._bloc, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
