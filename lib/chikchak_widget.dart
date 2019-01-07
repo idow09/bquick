@@ -19,27 +19,7 @@ class ChikChakGameState extends State<ChikChakGame> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        StreamBuilder(
-            stream: _bloc.gameState,
-            builder: (BuildContext context,
-                AsyncSnapshot<List<ChikChakTile>> snapshot) {
-              return GridView.count(
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: ChikChakBloc.WIDTH,
-                children: snapshot.data.map((tile) {
-                  if (tile.visible) {
-                    return GestureDetector(
-                      onTap: () {
-                        _bloc.clicks.add(tile.num);
-                      },
-                      child: Tile(child: Text('${tile.num}')),
-                    );
-                  } else {
-                    return Container();
-                  }
-                }).toList(),
-              );
-            }),
+        ChikChakGrid(_bloc),
         Positioned(
           bottom: 0,
           child: Padding(
@@ -147,6 +127,37 @@ class ChikChakGameState extends State<ChikChakGame> {
         )
       ],
     );
+  }
+}
+
+class ChikChakGrid extends StatelessWidget {
+  final _bloc;
+
+  const ChikChakGrid(this._bloc, {Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: _bloc.gameState,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
+          return GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: ChikChakBloc.WIDTH,
+            children: snapshot.data.map((tile) {
+              if (tile.visible) {
+                return GestureDetector(
+                  onTap: () {
+                    _bloc.clicks.add(tile.num);
+                  },
+                  child: Tile(child: Text('${tile.num}')),
+                );
+              } else {
+                return Container();
+              }
+            }).toList(),
+          );
+        });
   }
 }
 
