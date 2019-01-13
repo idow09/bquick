@@ -1,6 +1,7 @@
 import 'package:chik_chak/chikchak_bloc.dart';
 import 'package:chik_chak/chikchak_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(ChikChakApp());
@@ -30,6 +31,8 @@ class _ChikChakAppState extends State<ChikChakApp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.orange),
       title: 'RxDart ChikChak',
