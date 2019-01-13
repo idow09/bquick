@@ -8,12 +8,17 @@ class ChikChakGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Stack(
       children: <Widget>[
-        Dashboard(_bloc),
-        Expanded(child: ChikChakGrid(_bloc)),
+        Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Dashboard(_bloc),
+            ),
+            Expanded(child: ChikChakGrid(_bloc)),
+          ],
+        ),
         StatusTile(_bloc)
       ],
     );
