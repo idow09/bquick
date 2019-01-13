@@ -19,7 +19,34 @@ class ChikChakGame extends StatelessWidget {
             Expanded(child: ChikChakGrid(_bloc)),
           ],
         ),
-        StatusTile(_bloc)
+        StatusTile(_bloc),
+        Positioned(
+          bottom: 0.0,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: StreamBuilder(
+                stream: _bloc.gameStatus,
+                builder:
+                    (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
+                  if (snapshot.data == GameStatus.running) {
+                    return Tile(
+                      child: StreamBuilder(
+                        stream: _bloc.curNum,
+                        builder: (BuildContext context,
+                                AsyncSnapshot<int> snapshot) =>
+                            Text(
+                              "# ${snapshot.data}",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(fontSize: 25),
+                            ),
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
+          ),
+        )
       ],
     );
   }
@@ -75,28 +102,6 @@ class Dashboard extends StatelessWidget {
               );
             },
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder(
-              stream: _bloc.gameStatus,
-              builder:
-                  (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
-                if (snapshot.data == GameStatus.running) {
-                  return StreamBuilder(
-                    stream: _bloc.curNum,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<int> snapshot) =>
-                            Text(
-                              "# ${snapshot.data}",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(fontSize: 25),
-                            ),
-                  );
-                } else {
-                  return Container();
-                }
-              }),
         ),
       ],
     );
