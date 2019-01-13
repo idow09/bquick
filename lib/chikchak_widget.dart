@@ -30,6 +30,7 @@ class ChikChakGame extends StatelessWidget {
                     (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
                   if (snapshot.data == GameStatus.running) {
                     return Tile(
+                      color: Theme.of(context).accentColor,
                       child: StreamBuilder(
                         stream: _bloc.curNum,
                         builder: (BuildContext context,
@@ -181,12 +182,14 @@ class ChikChakGrid extends StatelessWidget {
 
 class Tile extends StatelessWidget {
   final child;
+  final color;
 
-  const Tile({this.child, Key key}) : super(key: key);
+  const Tile({this.child, this.color, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: color != null ? color : Theme.of(context).cardColor,
       child: FittedBox(
         fit: BoxFit.fitHeight,
         child: Padding(
