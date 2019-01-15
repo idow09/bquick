@@ -2,13 +2,19 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:chik_chak/chikchak_bloc.dart';
+import 'package:chik_chak/score_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 class MockStopwatch extends Mock implements Stopwatch {}
 
+class MockScoreRepository extends Mock implements ScoreRepository {}
+
 void main() {
   ChikChakBloc _bloc;
+
+  final ScoreRepository mockRepo = MockScoreRepository();
+
   setUp(() {
     var _fastStopwatch = MockStopwatch();
     var counter = 0;
@@ -16,9 +22,13 @@ void main() {
         .thenAnswer((_) => Duration(seconds: counter++));
 
     var _fastRunner = (_, c) => Timer.periodic(Duration(milliseconds: 5), c);
+    when(mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(
+        Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
 
-    _bloc =
-        ChikChakBloc(stopwatch: _fastStopwatch, periodicRunner: _fastRunner);
+    _bloc = ChikChakBloc(
+        stopwatch: _fastStopwatch,
+        periodicRunner: _fastRunner,
+        scoreRepository: mockRepo);
   });
 
   group('In initial state ', () {
@@ -52,6 +62,30 @@ void main() {
 
     test("game status is 'running'", () async {
       testGameStatusIsRunning(_bloc);
+    });
+
+    group('high-score ', () {
+      test("is fetched", () async {
+        verify(mockRepo.fetchHighScore());
+      });
+
+      test("and not published when does not exist", () async {
+        when(mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
+
+        _bloc = ChikChakBloc(
+            stopwatch: MockStopwatch(),
+            periodicRunner: (_, __) =>
+                Timer.periodic(Duration(minutes: 1), null),
+            scoreRepository: mockRepo);
+
+        expect(_bloc.highScore, emits("- - : - - . - - -"));
+        // TODO: never emits anything else but "- - : - - . - -"
+      });
+
+      test("and published when exists", () async {
+        expect(
+            _bloc.highScore, emitsInOrder(["- - : - - . - - -", "02:51.017"]));
+      });
     });
   });
 

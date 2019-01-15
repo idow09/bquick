@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
+import 'package:chik_chak/score_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,6 +18,7 @@ class ChikChakBloc {
 
   Stopwatch _stopwatch;
   Function _periodicRunner;
+  ScoreRepository _scoreRepository;
 
   List<ChikChakTile> _curState;
   int _curNum;
@@ -29,7 +31,10 @@ class ChikChakBloc {
   BehaviorSubject<GameStatus> _gameStatusSubject;
   BehaviorSubject<Duration> _highScoreSubject;
 
-  ChikChakBloc({Stopwatch stopwatch, Function periodicRunner}) {
+  ChikChakBloc(
+      {Stopwatch stopwatch,
+      Function periodicRunner,
+      ScoreRepository scoreRepository}) {
     if (stopwatch == null) {
       _stopwatch = Stopwatch();
     } else {
@@ -39,6 +44,11 @@ class ChikChakBloc {
       _periodicRunner = (d, c) => Timer.periodic(d, c);
     } else {
       _periodicRunner = periodicRunner;
+    }
+    if (scoreRepository == null) {
+      _scoreRepository = ScoreRepository();
+    } else {
+      _scoreRepository = scoreRepository;
     }
     resetState();
 
@@ -50,6 +60,12 @@ class ChikChakBloc {
     _gameStatusSubject =
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
     _highScoreSubject = BehaviorSubject<Duration>();
+
+    _scoreRepository
+        .fetchHighScore()
+        .then((highScore) =>
+            _highScoreSubject.add(Duration(milliseconds: highScore)))
+        .catchError((_) {});
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
