@@ -20,14 +20,14 @@ class ChikChakBloc {
 
   List<ChikChakTile> _curState;
   int _curNum;
-  Duration _bestTime;
+  Duration _highScore;
   Timer _updateStopwatchTimer;
 
   BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
   BehaviorSubject<int> _curNumSubject;
   BehaviorSubject<Duration> _curStopwatchSubject;
   BehaviorSubject<GameStatus> _gameStatusSubject;
-  BehaviorSubject<Duration> _bestTimeSubject;
+  BehaviorSubject<Duration> _highScoreSubject;
 
   ChikChakBloc({Stopwatch stopwatch, Function periodicRunner}) {
     if (stopwatch == null) {
@@ -49,7 +49,7 @@ class ChikChakBloc {
         BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
     _gameStatusSubject =
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
-    _bestTimeSubject = BehaviorSubject<Duration>();
+    _highScoreSubject = BehaviorSubject<Duration>();
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
@@ -93,7 +93,7 @@ class ChikChakBloc {
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
-  Stream<String> get bestTime => _bestTimeSubject.stream
+  Stream<String> get highScore => _highScoreSubject.stream
       .map((duration) => duration.inMilliseconds)
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_timeFormatter.format)
@@ -106,7 +106,7 @@ class ChikChakBloc {
     _curNumSubject.close();
     _curStopwatchSubject.close();
     _gameStatusSubject.close();
-    _bestTimeSubject.close();
+    _highScoreSubject.close();
   }
 
   void handleClickEvent(int numClicked) {
@@ -153,9 +153,9 @@ class ChikChakBloc {
     _stopwatch.stop();
     final ms = _stopwatch.elapsedMilliseconds;
     print("Game ended. Total time: $ms milliseconds.");
-    if (_bestTime == null || _stopwatch.elapsed < _bestTime) {
-      _bestTime = _stopwatch.elapsed;
-      _bestTimeSubject.add(_bestTime);
+    if (_highScore == null || _stopwatch.elapsed < _highScore) {
+      _highScore = _stopwatch.elapsed;
+      _highScoreSubject.add(_highScore);
     }
     _gameStatusSubject.add(GameStatus.finished);
   }

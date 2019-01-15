@@ -65,7 +65,7 @@ class Dashboard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: StreamBuilder(
-            stream: _bloc.bestTime,
+            stream: _bloc.highScore,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               return Row(
                 children: <Widget>[
