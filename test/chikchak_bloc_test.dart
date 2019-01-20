@@ -83,7 +83,7 @@ void main() {
             scoreRepository: mockRepo);
 
         expect(_bloc.highScore, emits("- - : - - . - - -"));
-        // TODO: never emits anything else but "- - : - - . - -"
+        // TODO: expect never emits anything else but "- - : - - . - -"
       });
 
       test("and published when exists", () async {
