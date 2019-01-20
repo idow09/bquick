@@ -1,4 +1,4 @@
-package com.weiss.ido.chikchak;
+package com.weiss.ido.bquick;
 
 import android.os.Bundle;
 

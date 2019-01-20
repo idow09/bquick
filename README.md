@@ -1,3 +1,3 @@
-# chik_chak
+# bquick
 
-ChikChak 2.0 is coming
+BQuick 2.0 is coming

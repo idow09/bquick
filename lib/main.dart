@@ -1,26 +1,26 @@
-import 'package:chik_chak/chikchak_bloc.dart';
-import 'package:chik_chak/chikchak_widget.dart';
+import 'package:bquick/bquick_bloc.dart';
+import 'package:bquick/bquick_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(ChikChakApp());
+  runApp(BQuickApp());
 }
 
-class ChikChakApp extends StatefulWidget {
-  ChikChakApp({Key key}) : super(key: key);
+class BQuickApp extends StatefulWidget {
+  BQuickApp({Key key}) : super(key: key);
 
   @override
-  _ChikChakAppState createState() => _ChikChakAppState();
+  _BQuickAppState createState() => _BQuickAppState();
 }
 
-class _ChikChakAppState extends State<ChikChakApp> {
-  ChikChakBloc _bloc;
+class _BQuickAppState extends State<BQuickApp> {
+  BQuickBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = ChikChakBloc();
+    _bloc = BQuickBloc();
   }
 
   @override
@@ -35,12 +35,12 @@ class _ChikChakAppState extends State<ChikChakApp> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.orange),
-      title: 'RxDart ChikChak',
+      title: 'RxDart BQuick',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Let's Play ChikChak!"),
+          title: Text("Let's Play BQuick!"),
         ),
-        body: ChikChakGame(_bloc),
+        body: BQuickGame(_bloc),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
                 onPressed: () => _bloc.restarts.add(null),

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:chik_chak/chikchak_bloc.dart';
-import 'package:chik_chak/score_repository.dart';
+import 'package:bquick/bquick_bloc.dart';
+import 'package:bquick/score_repository.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
@@ -11,7 +11,7 @@ class MockStopwatch extends Mock implements Stopwatch {}
 class MockScoreRepository extends Mock implements ScoreRepository {}
 
 void main() {
-  ChikChakBloc _bloc;
+  BQuickBloc _bloc;
   var _timerCallback;
 
   final ScoreRepository _mockRepo = MockScoreRepository();
@@ -29,7 +29,7 @@ void main() {
     when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(
         Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
 
-    _bloc = ChikChakBloc(
+    _bloc = BQuickBloc(
         stopwatch: _fastStopwatch,
         periodicRunner: _fastRunner,
         scoreRepository: _mockRepo);
@@ -37,7 +37,7 @@ void main() {
 
   group('In initial state ', () {
     group('tiles ', () {
-      UnmodifiableListView<ChikChakTile> _initialState;
+      UnmodifiableListView<BQuickTile> _initialState;
       setUp(() async => _initialState = await _bloc.gameState.first);
 
       test('are all visible', () async {
@@ -76,7 +76,7 @@ void main() {
       test("is not published when does not exist", () async {
         when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
 
-        _bloc = ChikChakBloc(
+        _bloc = BQuickBloc(
             stopwatch: MockStopwatch(),
             periodicRunner: (_, __) => {},
             scoreRepository: _mockRepo);
@@ -94,7 +94,7 @@ void main() {
 
   group('After restart ', () {
     group('tiles ', () {
-      UnmodifiableListView<ChikChakTile> _afterRestartState;
+      UnmodifiableListView<BQuickTile> _afterRestartState;
       setUp(() async {
         _bloc.clicks.add(1);
         _bloc.clicks.add(2);
@@ -161,7 +161,7 @@ void main() {
     setUp(() async {
       when(_fastStopwatch.elapsed).thenReturn(BETTER_SCORE);
       clickAllTiles(_bloc.clicks);
-      await drainStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
+      await drainStream(_bloc.gameState, 1 + BQuickBloc.TILES_COUNT);
     });
 
     test("they are invisible", () async {
@@ -195,7 +195,7 @@ void main() {
 }
 
 void clickAllTiles(Sink<int> clicks) {
-  List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
+  List.generate(BQuickBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
     clicks.add(i);
   });
 }
@@ -209,27 +209,27 @@ Future<void> drainStream(Stream stream, int count) async {
   }
 }
 
-void testAllTilesAreVisible(UnmodifiableListView<ChikChakTile> _initialState) {
+void testAllTilesAreVisible(UnmodifiableListView<BQuickTile> _initialState) {
   var _initialVisibilityState = _initialState.map((tile) => tile.visible);
 
   expect(_initialVisibilityState, everyElement(true));
 }
 
 void testTilesAreRandomlyOrdered(
-    UnmodifiableListView<ChikChakTile> _initialState) {
-  final _orderedNumList = List.generate(ChikChakBloc.TILES_COUNT, (i) => i + 1);
+    UnmodifiableListView<BQuickTile> _initialState) {
+  final _orderedNumList = List.generate(BQuickBloc.TILES_COUNT, (i) => i + 1);
   var _initialNumList = _initialState.map((tile) => tile.num);
 
   expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
 }
 
-void testGameStatusIsRunning(ChikChakBloc _bloc) {
+void testGameStatusIsRunning(BQuickBloc _bloc) {
   expect(_bloc.gameStatus, emits(GameStatus.running));
 }
 
-void testStopwatchIsReset(ChikChakBloc _bloc) {
+void testStopwatchIsReset(BQuickBloc _bloc) {
   expect(_bloc.curStopwatch, emits("00:00.000"));
 }
 
-void testCurrentNumberIsOne(ChikChakBloc _bloc) =>
+void testCurrentNumberIsOne(BQuickBloc _bloc) =>
     expect(_bloc.curNum, emits(1));

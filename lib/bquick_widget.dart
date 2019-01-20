@@ -1,10 +1,10 @@
-import 'package:chik_chak/chikchak_bloc.dart';
+import 'package:bquick/bquick_bloc.dart';
 import 'package:flutter/material.dart';
 
-class ChikChakGame extends StatelessWidget {
-  final ChikChakBloc _bloc;
+class BQuickGame extends StatelessWidget {
+  final BQuickBloc _bloc;
 
-  const ChikChakGame(this._bloc, {Key key}) : super(key: key);
+  const BQuickGame(this._bloc, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ChikChakGame extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Dashboard(_bloc),
             ),
-            Expanded(child: ChikChakGrid(_bloc)),
+            Expanded(child: BQuickGrid(_bloc)),
           ],
         ),
         StatusTile(_bloc),
@@ -149,20 +149,20 @@ class StatusTile extends StatelessWidget {
   }
 }
 
-class ChikChakGrid extends StatelessWidget {
+class BQuickGrid extends StatelessWidget {
   final _bloc;
 
-  const ChikChakGrid(this._bloc, {Key key}) : super(key: key);
+  const BQuickGrid(this._bloc, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: _bloc.gameState,
         builder:
-            (BuildContext context, AsyncSnapshot<List<ChikChakTile>> snapshot) {
+            (BuildContext context, AsyncSnapshot<List<BQuickTile>> snapshot) {
           return GridView.count(
             physics: NeverScrollableScrollPhysics(),
-            crossAxisCount: ChikChakBloc.WIDTH,
+            crossAxisCount: BQuickBloc.WIDTH,
             children: snapshot.data.map((tile) {
               if (tile.visible) {
                 return GestureDetector(

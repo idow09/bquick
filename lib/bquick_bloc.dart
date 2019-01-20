@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:math';
 
-import 'package:chik_chak/score_repository.dart';
+import 'package:bquick/score_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ChikChakBloc {
+class BQuickBloc {
   static const WIDTH = 6;
   static const TILES_COUNT = WIDTH * WIDTH;
 
@@ -20,18 +20,18 @@ class ChikChakBloc {
   Function _periodicRunner;
   ScoreRepository _scoreRepository;
 
-  List<ChikChakTile> _curState;
+  List<BQuickTile> _curState;
   int _curNum;
   Duration _highScore;
   Timer _updateStopwatchTimer;
 
-  BehaviorSubject<UnmodifiableListView<ChikChakTile>> _gameStateSubject;
+  BehaviorSubject<UnmodifiableListView<BQuickTile>> _gameStateSubject;
   BehaviorSubject<int> _curNumSubject;
   BehaviorSubject<Duration> _curStopwatchSubject;
   BehaviorSubject<GameStatus> _gameStatusSubject;
   BehaviorSubject<Duration> _highScoreSubject;
 
-  ChikChakBloc(
+  BQuickBloc(
       {Stopwatch stopwatch,
       Function periodicRunner,
       ScoreRepository scoreRepository}) {
@@ -52,7 +52,7 @@ class ChikChakBloc {
     }
     resetState();
 
-    _gameStateSubject = BehaviorSubject<UnmodifiableListView<ChikChakTile>>(
+    _gameStateSubject = BehaviorSubject<UnmodifiableListView<BQuickTile>>(
         seedValue: UnmodifiableListView(_curState));
     _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
     _curStopwatchSubject =
@@ -76,7 +76,7 @@ class ChikChakBloc {
   }
 
   void resetState() {
-    _curState = List.generate(TILES_COUNT, (i) => ChikChakTile(i + 1, true));
+    _curState = List.generate(TILES_COUNT, (i) => BQuickTile(i + 1, true));
     _curState.shuffle(_random);
     _curNum = 1;
 
@@ -97,7 +97,7 @@ class ChikChakBloc {
 
   Sink<void> get restarts => _restartsController.sink;
 
-  Stream<UnmodifiableListView<ChikChakTile>> get gameState =>
+  Stream<UnmodifiableListView<BQuickTile>> get gameState =>
       _gameStateSubject.stream;
 
   Stream<int> get curNum => _curNumSubject.stream;
@@ -178,11 +178,11 @@ class ChikChakBloc {
   }
 }
 
-class ChikChakTile {
+class BQuickTile {
   final int num;
   var visible;
 
-  ChikChakTile(this.num, this.visible);
+  BQuickTile(this.num, this.visible);
 }
 
 enum GameStatus { running, finished }
