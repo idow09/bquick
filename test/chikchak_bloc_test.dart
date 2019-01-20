@@ -15,9 +15,9 @@ void main() {
   var _timerCallback;
 
   final ScoreRepository mockRepo = MockScoreRepository();
+  final _fastStopwatch = MockStopwatch();
 
   setUp(() {
-    var _fastStopwatch = MockStopwatch();
     var counter = 0;
     when(_fastStopwatch.elapsed)
         .thenAnswer((_) => Duration(seconds: counter++));
@@ -174,8 +174,9 @@ void main() {
       expect(_bloc.gameStatus, emits(GameStatus.finished));
     });
 
-    test("stopwatch is stopped", () async {},
-        skip: "TODO: figure out how to test that stopwatch stopped");
+    test("stopwatch is stopped", () async {
+      verify(_fastStopwatch.stop());
+    });
   });
 }
 
