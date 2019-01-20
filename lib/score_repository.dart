@@ -7,5 +7,7 @@ class ScoreRepository {
     return (await _prefs).getInt('high-score-ms') ?? null;
   }
 
-  void storeHighScore(int milliseconds) {}
+  void storeHighScore(int milliseconds) async {
+    (await _prefs).setInt('high-score-ms', milliseconds);
+  }
 }
