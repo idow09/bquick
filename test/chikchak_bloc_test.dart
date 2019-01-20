@@ -78,8 +78,7 @@ void main() {
 
         _bloc = ChikChakBloc(
             stopwatch: MockStopwatch(),
-            periodicRunner: (_, __) =>
-                Timer.periodic(Duration(minutes: 1), null),
+            periodicRunner: (_, __) => {},
             scoreRepository: mockRepo);
 
         expect(_bloc.highScore, emits("- - : - - . - - -"));
