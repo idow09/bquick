@@ -14,7 +14,7 @@ void main() {
   ChikChakBloc _bloc;
   var _timerCallback;
 
-  final ScoreRepository mockRepo = MockScoreRepository();
+  final ScoreRepository _mockRepo = MockScoreRepository();
   final _fastStopwatch = MockStopwatch();
 
   setUp(() {
@@ -26,13 +26,13 @@ void main() {
       _timerCallback = c;
       return null;
     };
-    when(mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(
+    when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(
         Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
 
     _bloc = ChikChakBloc(
         stopwatch: _fastStopwatch,
         periodicRunner: _fastRunner,
-        scoreRepository: mockRepo);
+        scoreRepository: _mockRepo);
   });
 
   group('In initial state ', () {
@@ -70,22 +70,22 @@ void main() {
 
     group('high-score ', () {
       test("is fetched", () async {
-        verify(mockRepo.fetchHighScore());
+        verify(_mockRepo.fetchHighScore());
       });
 
-      test("and not published when does not exist", () async {
-        when(mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
+      test("is not published when does not exist", () async {
+        when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
 
         _bloc = ChikChakBloc(
             stopwatch: MockStopwatch(),
             periodicRunner: (_, __) => {},
-            scoreRepository: mockRepo);
+            scoreRepository: _mockRepo);
 
         expect(_bloc.highScore, emits("- - : - - . - - -"));
         // TODO: expect never emits anything else but "- - : - - . - -"
       });
 
-      test("and published when exists", () async {
+      test("is published when exists", () async {
         expect(
             _bloc.highScore, emitsInOrder(["- - : - - . - - -", "02:51.017"]));
       });
@@ -157,7 +157,9 @@ void main() {
   });
 
   group("After all tiles are clicked ", () {
+    const score = Duration(minutes: 2, seconds: 51, milliseconds: 20);
     setUp(() async {
+      when(_fastStopwatch.elapsed).thenReturn(score);
       clickAllTiles(_bloc.clicks);
       await drainStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
     });
@@ -175,6 +177,19 @@ void main() {
 
     test("stopwatch is stopped", () async {
       verify(_fastStopwatch.stop());
+    });
+
+    group('high-score ', () {
+      test("neither is stored nor is published if lower than cur", () async {},
+          skip: "TODO");
+
+      test("is stored if higher than current", () async {
+        verify(_mockRepo.storeHighScore(score.inMilliseconds));
+      });
+
+      test("is published if higher than currrent", () async {
+        expect(_bloc.highScore, emitsInOrder([anything, "02:51.020"]));
+      });
     });
   });
 }

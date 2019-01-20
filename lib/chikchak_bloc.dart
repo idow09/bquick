@@ -172,6 +172,7 @@ class ChikChakBloc {
     if (_highScore == null || _stopwatch.elapsed < _highScore) {
       _highScore = _stopwatch.elapsed;
       _highScoreSubject.add(_highScore);
+      _scoreRepository.storeHighScore(_highScore.inMilliseconds);
     }
     _gameStatusSubject.add(GameStatus.finished);
   }

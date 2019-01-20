@@ -6,4 +6,6 @@ class ScoreRepository {
   Future<int> fetchHighScore() async {
     return (await _prefs).getInt('high-score-ms') ?? null;
   }
+
+  void storeHighScore(int milliseconds) {}
 }
