@@ -157,9 +157,9 @@ void main() {
   });
 
   group("After all tiles are clicked ", () {
-    const score = Duration(minutes: 2, seconds: 51, milliseconds: 20);
+    const BETTER_SCORE = Duration(minutes: 2, seconds: 51, milliseconds: 12);
     setUp(() async {
-      when(_fastStopwatch.elapsed).thenReturn(score);
+      when(_fastStopwatch.elapsed).thenReturn(BETTER_SCORE);
       clickAllTiles(_bloc.clicks);
       await drainStream(_bloc.gameState, 1 + ChikChakBloc.TILES_COUNT);
     });
@@ -184,11 +184,11 @@ void main() {
           skip: "TODO");
 
       test("is stored if higher than current", () async {
-        verify(_mockRepo.storeHighScore(score.inMilliseconds));
+        verify(_mockRepo.storeHighScore(BETTER_SCORE.inMilliseconds));
       });
 
       test("is published if higher than currrent", () async {
-        expect(_bloc.highScore, emitsInOrder([anything, "02:51.020"]));
+        expect(_bloc.highScore, emitsInOrder([anything, "02:51.012"]));
       });
     });
   });

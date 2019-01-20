@@ -61,11 +61,11 @@ class ChikChakBloc {
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
     _highScoreSubject = BehaviorSubject<Duration>();
 
-    _scoreRepository
-        .fetchHighScore()
-        .then((highScore) =>
-            _highScoreSubject.add(Duration(milliseconds: highScore)))
-        .catchError((_) {});
+    _scoreRepository.fetchHighScore().then((highScore) {
+      var dur = Duration(milliseconds: highScore);
+      _highScore = dur;
+      _highScoreSubject.add(dur);
+    }).catchError((_) {});
 
     _clicksController.stream.listen((numClicked) async {
       handleClickEvent(numClicked);
