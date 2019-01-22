@@ -13,15 +13,18 @@ dependencies:
   shared_preferences: ^0.4.3
   intl: ^0.15.7
   mockito: ^4.0.0
-
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
   test: ^1.5.1+1
+  flutter_launcher_icons: ^0.7.0
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path: "assets/icon/web_hi_res_512.png"
 
 flutter:
-
   uses-material-design: true
