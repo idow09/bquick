@@ -38,7 +38,7 @@ class _BQuickAppState extends State<BQuickApp> {
       title: 'RxDart BQuick',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Let's Play BQuick!"),
+          title: Text("BQuick!"),
         ),
         body: BQuickGame(_bloc),
         floatingActionButton: Builder(
