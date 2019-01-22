@@ -81,13 +81,12 @@ void main() {
             periodicRunner: (_, __) => {},
             scoreRepository: _mockRepo);
 
-        expect(_bloc.highScore, emits("- - : - - . - - -"));
+        expect(_bloc.highScore, emits("- - : - - . - -"));
         // TODO: expect never emits anything else but "- - : - - . - -"
       });
 
       test("is published when exists", () async {
-        expect(
-            _bloc.highScore, emitsInOrder(["- - : - - . - - -", "02:51.017"]));
+        expect(_bloc.highScore, emitsInOrder(["- - : - - . - -", "02:51.01"]));
       });
     });
   });
@@ -188,7 +187,7 @@ void main() {
       });
 
       test("is published if higher than currrent", () async {
-        expect(_bloc.highScore, emitsInOrder([anything, "02:51.012"]));
+        expect(_bloc.highScore, emitsInOrder([anything, "02:51.01"]));
       });
     });
   });
@@ -228,8 +227,7 @@ void testGameStatusIsRunning(BQuickBloc _bloc) {
 }
 
 void testStopwatchIsReset(BQuickBloc _bloc) {
-  expect(_bloc.curStopwatch, emits("00:00.000"));
+  expect(_bloc.curStopwatch, emits("00:00.00"));
 }
 
-void testCurrentNumberIsOne(BQuickBloc _bloc) =>
-    expect(_bloc.curNum, emits(1));
+void testCurrentNumberIsOne(BQuickBloc _bloc) => expect(_bloc.curNum, emits(1));

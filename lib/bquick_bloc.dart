@@ -12,7 +12,7 @@ class BQuickBloc {
 
   final Random _random = Random();
   final Map<int, int> _num2index = Map();
-  final DateFormat _timeFormatter = new DateFormat('mm:ss.SSS');
+  final DateFormat _timeFormatter = DateFormat('mm:ss.SSS');
   final StreamController<int> _clicksController = StreamController<int>();
   final StreamController<void> _restartsController = StreamController<void>();
 
@@ -105,7 +105,8 @@ class BQuickBloc {
   Stream<String> get curStopwatch => _curStopwatchSubject.stream
       .map((duration) => duration.inMilliseconds)
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
-      .map(_timeFormatter.format);
+      .map(_timeFormatter.format)
+      .map((str) => str.substring(0, str.length - 1));
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
@@ -113,7 +114,8 @@ class BQuickBloc {
       .map((duration) => duration.inMilliseconds)
       .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_timeFormatter.format)
-      .startWith("- - : - - . - - -");
+      .map((str) => str.substring(0, str.length - 1))
+      .startWith("- - : - - . - -");
 
   void dispose() {
     _clicksController.close();
