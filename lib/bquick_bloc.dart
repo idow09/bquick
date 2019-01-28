@@ -81,7 +81,7 @@ class BQuickBloc {
     _curNum = 1;
 
     _curState.asMap().forEach((int i, BQuickTile tile) {
-      _num2index[tile.num] = i;
+      _num2index[tile.value] = i;
     });
 
     resetStopwatch();
@@ -156,14 +156,14 @@ class BQuickBloc {
   }
 
   void restartGame() {
-    print("Restarting game.");
+    print('Restarting game.');
     resetState();
     publishState();
     _curStopwatchSubject.add(_stopwatch.elapsed);
     _gameStatusSubject.add(GameStatus.running);
   }
 
-  void startStopwatchStream() async {
+  void startStopwatchStream() {
     _stopwatch.start();
     _updateStopwatchTimer =
         _periodicRunner(Duration(milliseconds: 30), (Timer _) async {
@@ -173,8 +173,8 @@ class BQuickBloc {
 
   void endGame() {
     _stopwatch.stop();
-    final ms = _stopwatch.elapsedMilliseconds;
-    print("Game ended. Total time: $ms milliseconds.");
+    final int ms = _stopwatch.elapsedMilliseconds;
+    print('Game ended. Total time: $ms milliseconds.');
     if (_highScore == null || _stopwatch.elapsed < _highScore) {
       _highScore = _stopwatch.elapsed;
       _highScoreSubject.add(_highScore);
@@ -185,10 +185,10 @@ class BQuickBloc {
 }
 
 class BQuickTile {
-  final int num;
+  final int value;
   bool visible;
 
-  BQuickTile(this.num, this.visible);
+  BQuickTile(this.value, this.visible);
 }
 
 enum GameStatus { running, finished }

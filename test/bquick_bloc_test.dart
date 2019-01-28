@@ -137,7 +137,7 @@ void main() {
     test('only 1 is invisible', () async {
       var _nonVisibleTilesNumStream = _bloc.gameState
           .map((list) => list.where((tile) => !tile.visible))
-          .map((list) => list.map((tile) => tile.num));
+          .map((list) => list.map((tile) => tile.value));
 
       expect(_nonVisibleTilesNumStream, emits([1]));
     });
@@ -218,7 +218,7 @@ void testAllTilesAreVisible(UnmodifiableListView<BQuickTile> _initialState) {
 void testTilesAreRandomlyOrdered(
     UnmodifiableListView<BQuickTile> _initialState) {
   final _orderedNumList = List.generate(BQuickBloc.TILES_COUNT, (i) => i + 1);
-  var _initialNumList = _initialState.map((tile) => tile.num);
+  var _initialNumList = _initialState.map((tile) => tile.value);
 
   expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
 }

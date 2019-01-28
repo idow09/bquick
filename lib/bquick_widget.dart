@@ -167,9 +167,9 @@ class BQuickGrid extends StatelessWidget {
               if (tile.visible) {
                 return GestureDetector(
                   onTap: () {
-                    _bloc.clicks.add(tile.num);
+                    _bloc.clicks.add(tile.value);
                   },
-                  child: Tile(child: Text('${tile.num}')),
+                  child: Tile(child: Text('${tile.value}')),
                 );
               } else {
                 return Container();
