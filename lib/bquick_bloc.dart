@@ -7,30 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BQuickBloc {
-  static const int WIDTH = 6;
-  static const int TILES_COUNT = WIDTH * WIDTH;
-
-  final Random _random = Random();
-  final Map<int, int> _num2index = <int, int>{};
-  final DateFormat _timeFormatter = DateFormat('mm:ss.SSS');
-  final StreamController<int> _clicksController = StreamController<int>();
-  final StreamController<void> _restartsController = StreamController<void>();
-
-  Stopwatch _stopwatch;
-  Function _periodicRunner;
-  ScoreRepository _scoreRepository;
-
-  List<BQuickTile> _curState;
-  int _curNum;
-  Duration _highScore;
-  Timer _updateStopwatchTimer;
-
-  BehaviorSubject<UnmodifiableListView<BQuickTile>> _gameStateSubject;
-  BehaviorSubject<int> _curNumSubject;
-  BehaviorSubject<Duration> _curStopwatchSubject;
-  BehaviorSubject<GameStatus> _gameStatusSubject;
-  BehaviorSubject<Duration> _highScoreSubject;
-
   BQuickBloc(
       {Stopwatch stopwatch,
       Function periodicRunner,
@@ -74,6 +50,31 @@ class BQuickBloc {
       restartGame();
     });
   }
+
+  static const int WIDTH = 6;
+
+  static const int TILES_COUNT = WIDTH * WIDTH;
+  final Random _random = Random();
+  final Map<int, int> _num2index = <int, int>{};
+  final DateFormat _timeFormatter = DateFormat('mm:ss.SSS');
+  final StreamController<int> _clicksController = StreamController<int>();
+
+  final StreamController<void> _restartsController = StreamController<void>();
+  Stopwatch _stopwatch;
+  Function _periodicRunner;
+
+  ScoreRepository _scoreRepository;
+  List<BQuickTile> _curState;
+  int _curNum;
+  Duration _highScore;
+
+  Timer _updateStopwatchTimer;
+  BehaviorSubject<UnmodifiableListView<BQuickTile>> _gameStateSubject;
+  BehaviorSubject<int> _curNumSubject;
+  BehaviorSubject<Duration> _curStopwatchSubject;
+  BehaviorSubject<GameStatus> _gameStatusSubject;
+
+  BehaviorSubject<Duration> _highScoreSubject;
 
   void resetState() {
     _curState = List.generate(TILES_COUNT, (int i) => BQuickTile(i + 1, true));
@@ -185,10 +186,10 @@ class BQuickBloc {
 }
 
 class BQuickTile {
+  BQuickTile(this.value, this.visible);
+
   final int value;
   bool visible;
-
-  BQuickTile(this.value, this.visible);
 }
 
 enum GameStatus { running, finished }

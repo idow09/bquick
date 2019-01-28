@@ -1,10 +1,12 @@
+import 'dart:collection';
+
 import 'package:bquick/bquick_bloc.dart';
 import 'package:flutter/material.dart';
 
 class BQuickGame extends StatelessWidget {
-  final BQuickBloc _bloc;
-
   const BQuickGame(this._bloc, {Key key}) : super(key: key);
+
+  final BQuickBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +26,21 @@ class BQuickGame extends StatelessWidget {
           bottom: 0.0,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: StreamBuilder(
+            child: StreamBuilder<GameStatus>(
                 stream: _bloc.gameStatus,
                 builder:
                     (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
                   if (snapshot.data == GameStatus.running) {
                     return Tile(
                       color: Theme.of(context).accentColor,
-                      child: StreamBuilder(
+                      child: StreamBuilder<int>(
                         stream: _bloc.curNum,
                         builder: (BuildContext context,
                                 AsyncSnapshot<int> snapshot) =>
                             Text(
-                              "# ${snapshot.data}",
+                              '# ${snapshot.data}',
                               textAlign: TextAlign.start,
-                              style: TextStyle(fontSize: 25),
+                              style: const TextStyle(fontSize: 25),
                             ),
                       ),
                     );
@@ -54,9 +56,9 @@ class BQuickGame extends StatelessWidget {
 }
 
 class Dashboard extends StatelessWidget {
-  final BQuickBloc _bloc;
-
   const Dashboard(this._bloc, {Key key}) : super(key: key);
+
+  final BQuickBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
@@ -64,19 +66,19 @@ class Dashboard extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder(
+          child: StreamBuilder<String>(
             stream: _bloc.highScore,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               return Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Icon(Icons.arrow_upward),
                   ),
                   Text(
-                    "${snapshot.data}",
+                    '${snapshot.data}',
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 25),
+                    style: const TextStyle(fontSize: 25),
                   ),
                 ],
               );
@@ -85,19 +87,19 @@ class Dashboard extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: StreamBuilder(
+          child: StreamBuilder<String>(
             stream: _bloc.curStopwatch,
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
               return Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     child: Icon(Icons.timer),
                   ),
                   Text(
-                    "${snapshot.data}",
+                    '${snapshot.data}',
                     textAlign: TextAlign.start,
-                    style: TextStyle(fontSize: 25),
+                    style: const TextStyle(fontSize: 25),
                   ),
                 ],
               );
@@ -110,13 +112,13 @@ class Dashboard extends StatelessWidget {
 }
 
 class StatusTile extends StatelessWidget {
-  final BQuickBloc _bloc;
-
   const StatusTile(this._bloc, {Key key}) : super(key: key);
+
+  final BQuickBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<GameStatus>(
       stream: _bloc.gameStatus,
       builder: (BuildContext context, AsyncSnapshot<GameStatus> snapshot) {
         if (snapshot.data == GameStatus.finished) {
@@ -124,18 +126,18 @@ class StatusTile extends StatelessWidget {
             child: Tile(
                 child: Column(
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.check,
                   size: 150,
                 ),
-                StreamBuilder(
+                StreamBuilder<String>(
                   stream: _bloc.curStopwatch,
                   builder:
                       (BuildContext context, AsyncSnapshot<String> snapshot) =>
                           Text(
-                            "${snapshot.data}",
+                            '${snapshot.data}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 25),
+                            style: const TextStyle(fontSize: 25),
                           ),
                 ),
               ],
@@ -150,20 +152,20 @@ class StatusTile extends StatelessWidget {
 }
 
 class BQuickGrid extends StatelessWidget {
-  final BQuickBloc _bloc;
-
   const BQuickGrid(this._bloc, {Key key}) : super(key: key);
+
+  final BQuickBloc _bloc;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
+    return StreamBuilder<UnmodifiableListView<BQuickTile>>(
         stream: _bloc.gameState,
         builder:
             (BuildContext context, AsyncSnapshot<List<BQuickTile>> snapshot) {
           return GridView.count(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: BQuickBloc.WIDTH,
-            children: snapshot.data.map((tile) {
+            children: snapshot.data.map((BQuickTile tile) {
               if (tile.visible) {
                 return GestureDetector(
                   onTap: () {
@@ -181,10 +183,10 @@ class BQuickGrid extends StatelessWidget {
 }
 
 class Tile extends StatelessWidget {
+  const Tile({this.child, this.color, Key key}) : super(key: key);
+
   final Widget child;
   final Color color;
-
-  const Tile({this.child, this.color, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +200,7 @@ class Tile extends StatelessWidget {
         ),
       ),
       elevation: 8,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10))),
     );
   }
