@@ -27,7 +27,8 @@ void main() {
       return null;
     };
     when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future<int>.value(
-        const Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
+        const Duration(minutes: 2, seconds: 51, milliseconds: 17)
+            .inMilliseconds));
 
     _bloc = BQuickBloc(
         stopwatch: _fastStopwatch,
@@ -47,7 +48,8 @@ void main() {
       test('are all visible after 2 clicked', () async {
         _bloc.clicks.add(2);
         drainStream(_bloc.gameState, 2);
-        final UnmodifiableListView<BQuickTile> _state = await _bloc.gameState.first;
+        final UnmodifiableListView<BQuickTile> _state =
+            await _bloc.gameState.first;
         testAllTilesAreVisible(_state);
       });
 
@@ -74,7 +76,8 @@ void main() {
       });
 
       test('is not published when does not exist', () async {
-        when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future<int>.value(null));
+        when(_mockRepo.fetchHighScore())
+            .thenAnswer((_) => Future<int>.value(null));
 
         _bloc = BQuickBloc(
             stopwatch: MockStopwatch(),
@@ -136,8 +139,10 @@ void main() {
 
     test('only 1 is invisible', () async {
       final Stream<Iterable<int>> _nonVisibleTilesNumStream = _bloc.gameState
-          .map((UnmodifiableListView<BQuickTile> list) => list.where((BQuickTile tile) => !tile.visible))
-          .map((Iterable<BQuickTile> list) => list.map((BQuickTile tile) => tile.value));
+          .map((UnmodifiableListView<BQuickTile> list) =>
+              list.where((BQuickTile tile) => !tile.visible))
+          .map((Iterable<BQuickTile> list) =>
+              list.map((BQuickTile tile) => tile.value));
 
       expect(_nonVisibleTilesNumStream, emits(<int>[1]));
     });
@@ -151,14 +156,16 @@ void main() {
       _bloc.curStopwatch.listen(expectAsync1((String curStopwatch) async {
         expect(curStopwatch, contains(count.toString()));
         count++;
-        if (count < 10)
+        if (count < 10) {
           await _timerCallback(null);
+        }
       }, count: 10));
     });
   });
 
   group('After all tiles are clicked ', () {
-    const Duration BETTER_SCORE = Duration(minutes: 2, seconds: 51, milliseconds: 12);
+    const Duration BETTER_SCORE =
+        Duration(minutes: 2, seconds: 51, milliseconds: 12);
     setUp(() async {
       when(_fastStopwatch.elapsed).thenReturn(BETTER_SCORE);
       clickAllTiles(_bloc.clicks);
@@ -166,8 +173,9 @@ void main() {
     });
 
     test('they are invisible', () async {
-      final Stream<Iterable<bool>> _gameVisibilityStateStream =
-          _bloc.gameState.map((UnmodifiableListView<BQuickTile> list) => list.map((BQuickTile tile) => tile.visible));
+      final Stream<Iterable<bool>> _gameVisibilityStateStream = _bloc.gameState
+          .map((UnmodifiableListView<BQuickTile> list) =>
+              list.map((BQuickTile tile) => tile.visible));
 
       expect(_gameVisibilityStateStream, emits(everyElement(false)));
     });
@@ -196,12 +204,12 @@ void main() {
 }
 
 void clickAllTiles(Sink<int> clicks) {
-  List.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1).forEach((int i) {
-    clicks.add(i);
-  });
+  List<int>.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1)
+      .forEach((int i) => clicks.add(i));
 }
 
-Future<void> drainStream(Stream<UnmodifiableListView<BQuickTile>> stream, int count) async {
+Future<void> drainStream(
+    Stream<UnmodifiableListView<BQuickTile>> stream, int count) async {
   int _count = 0;
   await for (UnmodifiableListView<BQuickTile> _ in stream) {
     if (++_count == count) {
@@ -211,15 +219,18 @@ Future<void> drainStream(Stream<UnmodifiableListView<BQuickTile>> stream, int co
 }
 
 void testAllTilesAreVisible(UnmodifiableListView<BQuickTile> _initialState) {
-  final UnmodifiableListView<bool> _initialVisibilityState = _initialState.map((BQuickTile tile) => tile.visible);
+  final UnmodifiableListView<bool> _initialVisibilityState =
+      _initialState.map((BQuickTile tile) => tile.visible);
 
   expect(_initialVisibilityState, everyElement(true));
 }
 
 void testTilesAreRandomlyOrdered(
     UnmodifiableListView<BQuickTile> _initialState) {
-  final List<int> _orderedNumList = List.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1);
-  final List<int> _initialNumList = _initialState.map((BQuickTile tile) => tile.value);
+  final List<int> _orderedNumList =
+      List<int>.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1);
+  final List<int> _initialNumList =
+      _initialState.map((BQuickTile tile) => tile.value);
 
   expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
 }

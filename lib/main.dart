@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(BQuickApp());
+  runApp(const BQuickApp());
 }
 
+@immutable
 class BQuickApp extends StatefulWidget {
-  BQuickApp({Key key}) : super(key: key);
+  const BQuickApp({Key key}) : super(key: key);
 
   @override
   _BQuickAppState createState() => _BQuickAppState();

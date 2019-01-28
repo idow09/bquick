@@ -77,7 +77,8 @@ class BQuickBloc {
   BehaviorSubject<Duration> _highScoreSubject;
 
   void resetState() {
-    _curState = List.generate(TILES_COUNT, (int i) => BQuickTile(i + 1, true));
+    _curState = List<BQuickTile>.generate(
+        TILES_COUNT, (int i) => BQuickTile(i + 1, true));
     _curState.shuffle(_random);
     _curNum = 1;
 
