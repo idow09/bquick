@@ -12,17 +12,17 @@ class MockScoreRepository extends Mock implements ScoreRepository {}
 
 void main() {
   BQuickBloc _bloc;
-  var _timerCallback;
+  Function _timerCallback;
 
   final ScoreRepository _mockRepo = MockScoreRepository();
-  final _fastStopwatch = MockStopwatch();
+  final Stopwatch _fastStopwatch = MockStopwatch();
 
   setUp(() {
     var counter = 0;
     when(_fastStopwatch.elapsed)
         .thenAnswer((_) => Duration(seconds: counter++));
 
-    var _fastRunner = (_, c) {
+    Function _fastRunner = (Duration _, Function c) {
       _timerCallback = c;
       return null;
     };
@@ -60,7 +60,7 @@ void main() {
       testCurrentNumberIsOne(_bloc);
     });
 
-    test("stopwatch is reset", () async {
+    test('stopwatch is reset', () async {
       testStopwatchIsReset(_bloc);
     });
 
@@ -69,24 +69,25 @@ void main() {
     });
 
     group('high-score ', () {
-      test("is fetched", () async {
+      test('is fetched', () async {
         verify(_mockRepo.fetchHighScore());
       });
 
-      test("is not published when does not exist", () async {
+      test('is not published when does not exist', () async {
         when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
 
         _bloc = BQuickBloc(
             stopwatch: MockStopwatch(),
-            periodicRunner: (_, __) => {},
+            periodicRunner: (Duration _, Function __) {},
             scoreRepository: _mockRepo);
 
-        expect(_bloc.highScore, emits("- - : - - . - -"));
+        expect(_bloc.highScore, emits('- - : - - . - -'));
         // TODO: expect never emits anything else but "- - : - - . - -"
       });
 
-      test("is published when exists", () async {
-        expect(_bloc.highScore, emitsInOrder(["- - : - - . - -", "02:51.01"]));
+      test('is published when exists', () async {
+        expect(_bloc.highScore,
+            emitsInOrder(<String>['- - : - - . - -', '02:51.01']));
       });
     });
   });
@@ -115,7 +116,7 @@ void main() {
       testCurrentNumberIsOne(_bloc);
     });
 
-    test("stopwatch is reset", () async {
+    test('stopwatch is reset', () async {
       testStopwatchIsReset(_bloc);
     });
 
@@ -133,7 +134,7 @@ void main() {
       await drainStream(_bloc.gameState, 1);
     });
 
-    test("only 1 is invisible", () async {
+    test('only 1 is invisible', () async {
       var _nonVisibleTilesNumStream = _bloc.gameState
           .map((list) => list.where((tile) => !tile.visible))
           .map((list) => list.map((tile) => tile.num));
@@ -141,11 +142,11 @@ void main() {
       expect(_nonVisibleTilesNumStream, emits([1]));
     });
 
-    test("current number is incremented to 2", () async {
+    test('current number is incremented to 2', () async {
       expect(_bloc.curNum, emits(2));
     });
 
-    test("stopwatch is running", () async {
+    test('stopwatch is running', () async {
       var count = 0;
       _bloc.curStopwatch.listen(expectAsync1((curStopwatch) async {
         expect(curStopwatch, contains(count.toString()));
@@ -163,7 +164,7 @@ void main() {
       await drainStream(_bloc.gameState, 1 + BQuickBloc.TILES_COUNT);
     });
 
-    test("they are invisible", () async {
+    test('they are invisible', () async {
       var _gameVisibilityStateStream =
           _bloc.gameState.map((list) => list.map((tile) => tile.visible));
 
@@ -174,20 +175,20 @@ void main() {
       expect(_bloc.gameStatus, emits(GameStatus.finished));
     });
 
-    test("stopwatch is stopped", () async {
+    test('stopwatch is stopped', () async {
       verify(_fastStopwatch.stop());
     });
 
     group('high-score ', () {
-      test("neither is stored nor is published if lower than cur", () async {},
-          skip: "TODO");
+      test('neither is stored nor is published if lower than cur', () async {},
+          skip: 'TODO');
 
-      test("is stored if higher than current", () async {
+      test('is stored if higher than current', () async {
         verify(_mockRepo.storeHighScore(BETTER_SCORE.inMilliseconds));
       });
 
-      test("is published if higher than currrent", () async {
-        expect(_bloc.highScore, emitsInOrder([anything, "02:51.01"]));
+      test('is published if higher than currrent', () async {
+        expect(_bloc.highScore, emitsInOrder(<dynamic>[anything, '02:51.01']));
       });
     });
   });

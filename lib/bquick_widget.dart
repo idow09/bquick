@@ -54,7 +54,7 @@ class BQuickGame extends StatelessWidget {
 }
 
 class Dashboard extends StatelessWidget {
-  final _bloc;
+  final BQuickBloc _bloc;
 
   const Dashboard(this._bloc, {Key key}) : super(key: key);
 
@@ -110,7 +110,7 @@ class Dashboard extends StatelessWidget {
 }
 
 class StatusTile extends StatelessWidget {
-  final _bloc;
+  final BQuickBloc _bloc;
 
   const StatusTile(this._bloc, {Key key}) : super(key: key);
 
@@ -150,7 +150,7 @@ class StatusTile extends StatelessWidget {
 }
 
 class BQuickGrid extends StatelessWidget {
-  final _bloc;
+  final BQuickBloc _bloc;
 
   const BQuickGrid(this._bloc, {Key key}) : super(key: key);
 
@@ -181,8 +181,8 @@ class BQuickGrid extends StatelessWidget {
 }
 
 class Tile extends StatelessWidget {
-  final child;
-  final color;
+  final Widget child;
+  final Color color;
 
   const Tile({this.child, this.color, Key key}) : super(key: key);
 

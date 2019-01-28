@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 class BQuickBloc {
-  static const WIDTH = 6;
-  static const TILES_COUNT = WIDTH * WIDTH;
+  static const int WIDTH = 6;
+  static const int TILES_COUNT = WIDTH * WIDTH;
 
   final Random _random = Random();
-  final Map<int, int> _num2index = Map();
+  final Map<int, int> _num2index = <int, int>{};
   final DateFormat _timeFormatter = DateFormat('mm:ss.SSS');
   final StreamController<int> _clicksController = StreamController<int>();
   final StreamController<void> _restartsController = StreamController<void>();
@@ -41,7 +41,7 @@ class BQuickBloc {
       _stopwatch = stopwatch;
     }
     if (periodicRunner == null) {
-      _periodicRunner = (d, c) => Timer.periodic(d, c);
+      _periodicRunner = (Duration d, Function c) => Timer.periodic(d, c);
     } else {
       _periodicRunner = periodicRunner;
     }
@@ -53,7 +53,7 @@ class BQuickBloc {
     resetState();
 
     _gameStateSubject = BehaviorSubject<UnmodifiableListView<BQuickTile>>(
-        seedValue: UnmodifiableListView(_curState));
+        seedValue: UnmodifiableListView<BQuickTile>(_curState));
     _curNumSubject = BehaviorSubject<int>(seedValue: _curNum);
     _curStopwatchSubject =
         BehaviorSubject<Duration>(seedValue: Duration(seconds: 0));
@@ -61,13 +61,13 @@ class BQuickBloc {
         BehaviorSubject<GameStatus>(seedValue: GameStatus.running);
     _highScoreSubject = BehaviorSubject<Duration>();
 
-    _scoreRepository.fetchHighScore().then((highScore) {
-      var dur = Duration(milliseconds: highScore);
+    _scoreRepository.fetchHighScore().then((int highScore) {
+      final Duration dur = Duration(milliseconds: highScore);
       _highScore = dur;
       _highScoreSubject.add(dur);
-    }).catchError((_) {});
+    }).catchError((Object _) {});
 
-    _clicksController.stream.listen((numClicked) async {
+    _clicksController.stream.listen((int numClicked) async {
       handleClickEvent(numClicked);
     });
     _restartsController.stream.listen((_) async {
@@ -76,11 +76,11 @@ class BQuickBloc {
   }
 
   void resetState() {
-    _curState = List.generate(TILES_COUNT, (i) => BQuickTile(i + 1, true));
+    _curState = List.generate(TILES_COUNT, (int i) => BQuickTile(i + 1, true));
     _curState.shuffle(_random);
     _curNum = 1;
 
-    _curState.asMap().forEach((i, tile) {
+    _curState.asMap().forEach((int i, BQuickTile tile) {
       _num2index[tile.num] = i;
     });
 
@@ -103,19 +103,19 @@ class BQuickBloc {
   Stream<int> get curNum => _curNumSubject.stream;
 
   Stream<String> get curStopwatch => _curStopwatchSubject.stream
-      .map((duration) => duration.inMilliseconds)
-      .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
+      .map((Duration duration) => duration.inMilliseconds)
+      .map((int ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_timeFormatter.format)
-      .map((str) => str.substring(0, str.length - 1));
+      .map((String str) => str.substring(0, str.length - 1));
 
   Stream<GameStatus> get gameStatus => _gameStatusSubject.stream;
 
   Stream<String> get highScore => _highScoreSubject.stream
-      .map((duration) => duration.inMilliseconds)
-      .map((ms) => DateTime.fromMillisecondsSinceEpoch(ms))
+      .map((Duration duration) => duration.inMilliseconds)
+      .map((int ms) => DateTime.fromMillisecondsSinceEpoch(ms))
       .map(_timeFormatter.format)
-      .map((str) => str.substring(0, str.length - 1))
-      .startWith("- - : - - . - -");
+      .map((String str) => str.substring(0, str.length - 1))
+      .startWith('- - : - - . - -');
 
   void dispose() {
     _clicksController.close();
@@ -135,8 +135,12 @@ class BQuickBloc {
   }
 
   void handleCorrectNumClicked(int numClicked) {
-    if (numClicked == 1) startStopwatchStream();
-    if (numClicked == TILES_COUNT) endGame();
+    if (numClicked == 1) {
+      startStopwatchStream();
+    }
+    if (numClicked == TILES_COUNT) {
+      endGame();
+    }
     updateState(numClicked);
     publishState();
   }
@@ -147,7 +151,7 @@ class BQuickBloc {
   }
 
   void publishState() {
-    _gameStateSubject.add(UnmodifiableListView(_curState));
+    _gameStateSubject.add(UnmodifiableListView<BQuickTile>(_curState));
     _curNumSubject.add(_curNum);
   }
 
@@ -162,7 +166,7 @@ class BQuickBloc {
   void startStopwatchStream() async {
     _stopwatch.start();
     _updateStopwatchTimer =
-        _periodicRunner(Duration(milliseconds: 30), (_) async {
+        _periodicRunner(Duration(milliseconds: 30), (Timer _) async {
       _curStopwatchSubject.add(_stopwatch.elapsed);
     });
   }
@@ -182,7 +186,7 @@ class BQuickBloc {
 
 class BQuickTile {
   final int num;
-  var visible;
+  bool visible;
 
   BQuickTile(this.num, this.visible);
 }
