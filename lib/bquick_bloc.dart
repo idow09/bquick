@@ -130,15 +130,18 @@ class BQuickBloc {
 
   void handleClickEvent(int numClicked) {
     print('User clicked on $numClicked.');
-    if (numClicked == _curNum)
+    if (numClicked == _curNum) {
       handleCorrectNumClicked(numClicked);
+    }
   }
 
   void handleCorrectNumClicked(int numClicked) {
-    if (numClicked == 1)
+    if (numClicked == 1) {
       startStopwatchStream();
-    if (numClicked == TILES_COUNT)
+    }
+    if (numClicked == TILES_COUNT) {
       endGame();
+    }
     updateState(numClicked);
     publishState();
   }
