@@ -1,13 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ScoreRepository {
-  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<int> fetchHighScore() async {
-    return (await _prefs).getInt('high-score-ms') ?? null;
+    return (await _prefs).getInt('high-score-ms');
   }
 
-  void storeHighScore(int milliseconds) async {
+  Future<void> storeHighScore(int milliseconds) async {
     (await _prefs).setInt('high-score-ms', milliseconds);
   }
 }

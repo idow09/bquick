@@ -31,21 +31,23 @@ class _BQuickAppState extends State<BQuickApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.orange),
       title: 'RxDart BQuick',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("BQuick!"),
+          title: const Text('BQuick!'),
         ),
         body: BQuickGame(_bloc),
         floatingActionButton: Builder(
-          builder: (context) => FloatingActionButton(
+          builder: (BuildContext context) => FloatingActionButton(
                 onPressed: () => _bloc.restarts.add(null),
-                child: Icon(Icons.refresh),
-                tooltip: "Restart",
+                child: const Icon(Icons.refresh),
+                tooltip: 'Restart',
               ),
         ),
       ),

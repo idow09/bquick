@@ -18,16 +18,16 @@ void main() {
   final Stopwatch _fastStopwatch = MockStopwatch();
 
   setUp(() {
-    var counter = 0;
+    int counter = 0;
     when(_fastStopwatch.elapsed)
         .thenAnswer((_) => Duration(seconds: counter++));
 
-    Function _fastRunner = (Duration _, Function c) {
+    final Function _fastRunner = (Duration _, Function c) {
       _timerCallback = c;
       return null;
     };
-    when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(
-        Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
+    when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future<int>.value(
+        const Duration(minutes: 2, seconds: 51, milliseconds: 17).inMilliseconds));
 
     _bloc = BQuickBloc(
         stopwatch: _fastStopwatch,
@@ -47,7 +47,7 @@ void main() {
       test('are all visible after 2 clicked', () async {
         _bloc.clicks.add(2);
         drainStream(_bloc.gameState, 2);
-        var _state = await _bloc.gameState.first;
+        final UnmodifiableListView<BQuickTile> _state = await _bloc.gameState.first;
         testAllTilesAreVisible(_state);
       });
 
@@ -74,7 +74,7 @@ void main() {
       });
 
       test('is not published when does not exist', () async {
-        when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future.value(null));
+        when(_mockRepo.fetchHighScore()).thenAnswer((_) => Future<int>.value(null));
 
         _bloc = BQuickBloc(
             stopwatch: MockStopwatch(),
@@ -82,7 +82,7 @@ void main() {
             scoreRepository: _mockRepo);
 
         expect(_bloc.highScore, emits('- - : - - . - -'));
-        // TODO: expect never emits anything else but "- - : - - . - -"
+        // TODO(idow09): expect never emits anything else but "- - : - - . - -", https:// issue
       });
 
       test('is published when exists', () async {
@@ -125,7 +125,7 @@ void main() {
     });
   });
 
-  group("After 1, 3 is clicked ", () {
+  group('After 1, 3 is clicked ', () {
     setUp(() async {
       _bloc.clicks.add(1);
       await drainStream(_bloc.gameState, 1);
@@ -135,11 +135,11 @@ void main() {
     });
 
     test('only 1 is invisible', () async {
-      var _nonVisibleTilesNumStream = _bloc.gameState
-          .map((list) => list.where((tile) => !tile.visible))
-          .map((list) => list.map((tile) => tile.value));
+      final Stream<Iterable<int>> _nonVisibleTilesNumStream = _bloc.gameState
+          .map((UnmodifiableListView<BQuickTile> list) => list.where((BQuickTile tile) => !tile.visible))
+          .map((Iterable<BQuickTile> list) => list.map((BQuickTile tile) => tile.value));
 
-      expect(_nonVisibleTilesNumStream, emits([1]));
+      expect(_nonVisibleTilesNumStream, emits(<int>[1]));
     });
 
     test('current number is incremented to 2', () async {
@@ -147,17 +147,18 @@ void main() {
     });
 
     test('stopwatch is running', () async {
-      var count = 0;
-      _bloc.curStopwatch.listen(expectAsync1((curStopwatch) async {
+      int count = 0;
+      _bloc.curStopwatch.listen(expectAsync1((String curStopwatch) async {
         expect(curStopwatch, contains(count.toString()));
         count++;
-        if (count < 10) await _timerCallback(null);
+        if (count < 10)
+          await _timerCallback(null);
       }, count: 10));
     });
   });
 
-  group("After all tiles are clicked ", () {
-    const BETTER_SCORE = Duration(minutes: 2, seconds: 51, milliseconds: 12);
+  group('After all tiles are clicked ', () {
+    const Duration BETTER_SCORE = Duration(minutes: 2, seconds: 51, milliseconds: 12);
     setUp(() async {
       when(_fastStopwatch.elapsed).thenReturn(BETTER_SCORE);
       clickAllTiles(_bloc.clicks);
@@ -165,8 +166,8 @@ void main() {
     });
 
     test('they are invisible', () async {
-      var _gameVisibilityStateStream =
-          _bloc.gameState.map((list) => list.map((tile) => tile.visible));
+      final Stream<Iterable<bool>> _gameVisibilityStateStream =
+          _bloc.gameState.map((UnmodifiableListView<BQuickTile> list) => list.map((BQuickTile tile) => tile.visible));
 
       expect(_gameVisibilityStateStream, emits(everyElement(false)));
     });
@@ -195,14 +196,14 @@ void main() {
 }
 
 void clickAllTiles(Sink<int> clicks) {
-  List.generate(BQuickBloc.TILES_COUNT, (i) => i + 1).forEach((i) {
+  List.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1).forEach((int i) {
     clicks.add(i);
   });
 }
 
-Future<void> drainStream(Stream stream, int count) async {
-  var _count = 0;
-  await for (var _ in stream) {
+Future<void> drainStream(Stream<UnmodifiableListView<BQuickTile>> stream, int count) async {
+  int _count = 0;
+  await for (UnmodifiableListView<BQuickTile> _ in stream) {
     if (++_count == count) {
       break;
     }
@@ -210,15 +211,15 @@ Future<void> drainStream(Stream stream, int count) async {
 }
 
 void testAllTilesAreVisible(UnmodifiableListView<BQuickTile> _initialState) {
-  var _initialVisibilityState = _initialState.map((tile) => tile.visible);
+  final UnmodifiableListView<bool> _initialVisibilityState = _initialState.map((BQuickTile tile) => tile.visible);
 
   expect(_initialVisibilityState, everyElement(true));
 }
 
 void testTilesAreRandomlyOrdered(
     UnmodifiableListView<BQuickTile> _initialState) {
-  final _orderedNumList = List.generate(BQuickBloc.TILES_COUNT, (i) => i + 1);
-  var _initialNumList = _initialState.map((tile) => tile.value);
+  final List<int> _orderedNumList = List.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1);
+  final List<int> _initialNumList = _initialState.map((BQuickTile tile) => tile.value);
 
   expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
 }
@@ -228,7 +229,7 @@ void testGameStatusIsRunning(BQuickBloc _bloc) {
 }
 
 void testStopwatchIsReset(BQuickBloc _bloc) {
-  expect(_bloc.curStopwatch, emits("00:00.00"));
+  expect(_bloc.curStopwatch, emits('00:00.00'));
 }
 
 void testCurrentNumberIsOne(BQuickBloc _bloc) => expect(_bloc.curNum, emits(1));
