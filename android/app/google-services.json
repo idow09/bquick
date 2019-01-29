@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "586270926697",
+    "firebase_url": "https://bquick-e8ffe.firebaseio.com",
+    "project_id": "bquick-e8ffe",
+    "storage_bucket": "bquick-e8ffe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586270926697:android:d5fccb11822b4a73",
+        "android_client_info": {
+          "package_name": "com.weiss.ido.bquick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586270926697-fr10j1n6r6gbslh767n312ao4800610m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4P1OVjZDX2_SpwTcf1gASYrFmMkZW6X0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
