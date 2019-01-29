@@ -35,17 +35,13 @@ class BQuickGame extends StatelessWidget {
                       stream: _bloc.curNum,
                       builder:
                           (BuildContext context, AsyncSnapshot<int> snapshot) {
-                        if (snapshot.hasData) {
-                          return Tile(
-                              color: Theme.of(context).accentColor,
-                              child: Text(
-                                '# ${snapshot.data}',
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(fontSize: 25),
-                              ));
-                        } else {
-                          return Container();
-                        }
+                        return Tile(
+                            color: Theme.of(context).accentColor,
+                            child: Text(
+                              '# ${snapshot.data ?? 1}',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(fontSize: 25),
+                            ));
                       },
                     );
                   } else {
