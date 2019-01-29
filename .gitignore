@@ -1,6 +1,5 @@
 # Miscellaneous
 key.properties
-google-services.json
 *.class
 *.lock
 *.log
