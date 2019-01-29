@@ -219,7 +219,7 @@ Future<void> drainStream(
 }
 
 void testAllTilesAreVisible(UnmodifiableListView<BQuickTile> _initialState) {
-  final UnmodifiableListView<bool> _initialVisibilityState =
+  final Iterable<bool> _initialVisibilityState =
       _initialState.map((BQuickTile tile) => tile.visible);
 
   expect(_initialVisibilityState, everyElement(true));
@@ -229,7 +229,7 @@ void testTilesAreRandomlyOrdered(
     UnmodifiableListView<BQuickTile> _initialState) {
   final List<int> _orderedNumList =
       List<int>.generate(BQuickBloc.TILES_COUNT, (int i) => i + 1);
-  final List<int> _initialNumList =
+  final Iterable<int> _initialNumList =
       _initialState.map((BQuickTile tile) => tile.value);
 
   expect(_initialNumList, isNot(orderedEquals(_orderedNumList)));
