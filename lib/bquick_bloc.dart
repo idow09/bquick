@@ -58,8 +58,8 @@ class BQuickBloc {
   final Map<int, int> _num2index = <int, int>{};
   final DateFormat _timeFormatter = DateFormat('mm:ss.SSS');
   final StreamController<int> _clicksController = StreamController<int>();
-
   final StreamController<void> _restartsController = StreamController<void>();
+
   Stopwatch _stopwatch;
   Function _periodicRunner;
 
